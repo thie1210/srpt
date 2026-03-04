@@ -138,6 +138,17 @@ install_py() {
         err "Failed to find extracted py source"
     fi
     
+    # Install dependencies
+    echo "  Installing dependencies..."
+    "$python_bin" -m pip install --quiet --disable-pip-version-check \
+        "httpx[http2]>=0.27.0" \
+        "installer>=0.7.0" \
+        "packaging>=21.0" \
+        "resolvelib>=1.0.0" \
+        "rich>=13.0.0" \
+        "tomli>=2.0.0" || err "Failed to install dependencies"
+    echo "  ✓ Dependencies installed"
+    
     # Create launcher script
     local launcher="$PY_BIN_DIR/py"
     mkdir -p "$PY_BIN_DIR"
