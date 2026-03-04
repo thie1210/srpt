@@ -54,9 +54,13 @@ py --with-version 3.14 my_script.py
 py versions
 ```
 
+**What's a project?** Just a folder with a `pyproject.toml` file. That's it. No special structure, no complex setup. Create a folder, add a `pyproject.toml`, and you're good to go.
+
 ## Features
 
 ### 🎯 Project Management
+
+A project is just a folder with a `pyproject.toml` file. No magic, no special structure required.
 
 ```bash
 # Dashboard showing project status, dependencies, and suggestions
