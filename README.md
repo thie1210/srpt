@@ -54,15 +54,21 @@ py --with-version 3.14 my_script.py
 py versions
 ```
 
-**What's a project?** Just a folder with a `pyproject.toml` file. That's it. No special structure, no complex setup. Create a folder, add a `pyproject.toml`, and you're good to go.
+**What's a project?** Just a folder with a `.venv` and `pyproject.toml`. That's it. Transform any folder into a project by running `py init` or `py install <package>`. No ceremony, no complex setup.
 
 ## Features
 
 ### 🎯 Project Management
 
-A project is just a folder with a `pyproject.toml` file. No magic, no special structure required.
+A project is just a folder with a `.venv` and `pyproject.toml`. Transform any folder into a project:
 
 ```bash
+# Initialize a new project (creates pyproject.toml + .venv)
+py init
+
+# Or just start installing packages (creates .venv automatically)
+py install requests
+
 # Dashboard showing project status, dependencies, and suggestions
 py status
 ```
