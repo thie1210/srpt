@@ -23,13 +23,13 @@ Bootstraps Python, just run:
 
 **macOS/Linux:**
 ```bash
-curl -sSL https://raw.githubusercontent.com/thie1210/py/v0.1.0/install.sh | sh
+curl -sSL https://raw.githubusercontent.com/thie1210/py/v0.1.1/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
 **Windows (PowerShell):**
 ```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/thie1210/py/v0.1.0/install.ps1 -OutFile install.ps1
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/thie1210/py/v0.1.1/install.ps1 -OutFile install.ps1
 .\install.ps1
 $env:PATH += ";$env:USERPROFILE\.local\bin"
 ```

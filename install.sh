@@ -13,7 +13,7 @@
 set -euo pipefail
 
 # Configuration
-PY_VERSION="0.1.0"
+PY_VERSION="0.1.1"
 PYTHON_VERSION="3.13.12"
 PYTHON_BUILD_STANDALONE_TAG="20260211"
 PY_BASE_DIR="${PY_BASE_DIR:-$HOME/.local/share/py}"
