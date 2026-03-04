@@ -37,6 +37,9 @@ $env:PATH += ";$env:USERPROFILE\.local\bin"
 ## Quick Start
 
 ```bash
+# Start Python interpreter
+py
+
 # Check project status
 py status
 
