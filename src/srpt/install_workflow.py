@@ -117,7 +117,7 @@ async def install_command(packages: List[str]):
     target_dir.mkdir(parents=True, exist_ok=True)
 
     # 3. Download wheels
-    cache_dir = Path.home() / ".local" / "share" / "py" / "cache"
+    cache_dir = Path.home() / ".local" / "share" / "srpt" / "cache"
     async with Downloader(cache_dir) as downloader:
         wheel_paths = await downloader.download_packages(dependencies)
 

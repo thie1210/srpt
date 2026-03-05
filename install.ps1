@@ -7,11 +7,11 @@
 # Based on rustup and uv installation patterns
 
 # Configuration
-$PY_VERSION = "0.1.0"
+$SRPT_VERSION = "0.2.15"
 $PYTHON_VERSION = "3.13.12"
 $PYTHON_BUILD_STANDALONE_TAG = "20260211"
-$PY_BASE_DIR = if ($env:PY_BASE_DIR) { $env:PY_BASE_DIR } else { "$env:USERPROFILE\.local\share\py" }
-$PY_BIN_DIR = if ($env:PY_BIN_DIR) { $env:PY_BIN_DIR } else { "$env:USERPROFILE\.local\bin" }
+$SRPT_BASE_DIR = if ($env:SRPT_BASE_DIR) { $env:SRPT_BASE_DIR } else { "$env:USERPROFILE\.local\share\srpt" }
+$SRPT_BIN_DIR = if ($env:SRPT_BIN_DIR) { $env:SRPT_BIN_DIR } else { "$env:USERPROFILE\.local\bin" }
 
 # Platform detection
 function Get-Platform {
@@ -47,9 +47,9 @@ function Download-File {
 # Install Python
 function Install-Python {
     $platform = Get-Platform
-    $pythonDir = "$PY_BASE_DIR\python\$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG"
+    $pythonDir = "$SRPT_BASE_DIR\python\$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG"
     $pythonUrl = "https://github.com/astral-sh/python-build-standalone/releases/download/$PYTHON_BUILD_STANDALONE_TAG/cpython-$PYTHON_VERSION+$PYTHON_BUILD_STANDALONE_TAG-$platform-install_only.tar.gz"
-    $downloadFile = "$PY_BASE_DIR\downloads\python.tar.gz"
+    $downloadFile = "$SRPT_BASE_DIR\downloads\python.tar.gz"
     
     if (Test-Path "$pythonDir\python\python.exe") {
         Write-Host "Python $PYTHON_VERSION already installed at $pythonDir"
@@ -59,7 +59,7 @@ function Install-Python {
     Write-Host ""
     Write-Host "Installing Python $PYTHON_VERSION for $platform..."
     
-    New-Item -ItemType Directory -Force -Path "$PY_BASE_DIR\downloads" | Out-Null
+    New-Item -ItemType Directory -Force -Path "$SRPT_BASE_DIR\downloads" | Out-Null
     New-Item -ItemType Directory -Force -Path $pythonDir | Out-Null
     
     Download-File -Url $pythonUrl -Output $downloadFile
@@ -80,66 +80,66 @@ function Install-Python {
     Write-Host "Python installed successfully!"
 }
 
-# Install py
-function Install-PyTool {
-    $pythonBin = "$PY_BASE_DIR\python\$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG\python\python.exe"
+# Install srpt
+function Install-Srpt {
+    $pythonBin = "$SRPT_BASE_DIR\python\$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG\python\python.exe"
     
     Write-Host ""
-    Write-Host "Installing py $PY_VERSION..."
+    Write-Host "Installing srpt $SRPT_VERSION..."
     
     # Create lib directory
-    New-Item -ItemType Directory -Force -Path "$PY_BASE_DIR\lib" | Out-Null
+    New-Item -ItemType Directory -Force -Path "$SRPT_BASE_DIR\lib" | Out-Null
     
     # Create launcher script
-    $launcher = "$PY_BIN_DIR\py.ps1"
-    New-Item -ItemType Directory -Force -Path $PY_BIN_DIR | Out-Null
+    $launcher = "$SRPT_BIN_DIR\srpt.ps1"
+    New-Item -ItemType Directory -Force -Path $SRPT_BIN_DIR | Out-Null
     
     $launcherContent = @'
-# Py launcher script for Windows
-$PY_BASE_DIR = if ($env:PY_BASE_DIR) { $env:PY_BASE_DIR } else { "$env:USERPROFILE\.local\share\py" }
+# srpt launcher script for Windows
+$SRPT_BASE_DIR = if ($env:SRPT_BASE_DIR) { $env:SRPT_BASE_DIR } else { "$env:USERPROFILE\.local\share\srpt" }
 $PYTHON_VERSION = "3.13.12"
 $PYTHON_BUILD_STANDALONE_TAG = "20260211"
-$PYTHON_BIN = "$PY_BASE_DIR\python\$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG\python\python.exe"
-$PY_LIB = "$PY_BASE_DIR\lib\py"
+$PYTHON_BIN = "$SRPT_BASE_DIR\python\$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG\python\python.exe"
+$SRPT_LIB = "$SRPT_BASE_DIR\lib\srpt"
 
 if (-not (Test-Path $PYTHON_BIN)) {
     Write-Error "Error: Managed Python not found at $PYTHON_BIN"
-    Write-Host "Please run the installer: https://pyproject.org/install.ps1"
+    Write-Host "Please run the installer: https://raw.githubusercontent.com/thie1210/srpt/main/install.ps1"
     exit 1
 }
 
-if (-not (Test-Path $PY_LIB)) {
-    Write-Error "Error: py not installed at $PY_LIB"
-    Write-Host "Please run the installer: https://pyproject.org/install.ps1"
+if (-not (Test-Path $SRPT_LIB)) {
+    Write-Error "Error: srpt not installed at $SRPT_LIB"
+    Write-Host "Please run the installer: https://raw.githubusercontent.com/thie1210/srpt/main/install.ps1"
     exit 1
 }
 
-$env:PYTHONPATH = "$PY_LIB\src"
-& $PYTHON_BIN "$PY_LIB\src\py\__main__.py" $args
+$env:PYTHONPATH = "$SRPT_LIB\src"
+& $PYTHON_BIN "$SRPT_LIB\src\srpt\__main__.py" $args
 '@
     
     Set-Content -Path $launcher -Value $launcherContent -Encoding UTF8
     
     # Also create a .bat file for cmd.exe compatibility
-    $batLauncher = "$PY_BIN_DIR\py.bat"
+    $batLauncher = "$SRPT_BIN_DIR\srpt.bat"
     $batContent = "@echo off`npowershell -NoProfile -ExecutionPolicy Bypass -File `"$launcher`" %*"
     Set-Content -Path $batLauncher -Value $batContent -Encoding ASCII
     
-    # Copy current py source
+    # Copy current srpt source
     $scriptDir = Split-Path -Parent $PSCommandPath
-    if (Test-Path "$scriptDir\src\py") {
-        Write-Host "Installing py from $scriptDir..."
-        if (Test-Path "$PY_BASE_DIR\lib\py") {
-            Remove-Item -Recurse -Force "$PY_BASE_DIR\lib\py"
+    if (Test-Path "$scriptDir\src\srpt") {
+        Write-Host "Installing srpt from $scriptDir..."
+        if (Test-Path "$SRPT_BASE_DIR\lib\srpt") {
+            Remove-Item -Recurse -Force "$SRPT_BASE_DIR\lib\srpt"
         }
-        Copy-Item -Recurse -Path $scriptDir -Destination "$PY_BASE_DIR\lib\py" -ErrorAction SilentlyContinue
-        Write-Host "py installed to $PY_BASE_DIR\lib\py"
+        Copy-Item -Recurse -Path $scriptDir -Destination "$SRPT_BASE_DIR\lib\srpt" -ErrorAction SilentlyContinue
+        Write-Host "srpt installed to $SRPT_BASE_DIR\lib\srpt"
     } else {
-        Write-Host "Warning: py source not found. You'll need to install it manually."
+        Write-Host "Warning: srpt source not found. You'll need to install it manually."
     }
     
     Write-Host ""
-    Write-Host "py launcher created at $launcher"
+    Write-Host "srpt launcher created at $launcher"
 }
 
 # Finalize
@@ -149,36 +149,36 @@ function Finalize-Install {
     Write-Host "Installation complete!"
     Write-Host "================================"
     Write-Host ""
-    Write-Host "py has been installed to: $PY_BIN_DIR"
+    Write-Host "srpt has been installed to: $SRPT_BIN_DIR"
     Write-Host ""
     
-    # Check if py is in PATH
-    $pyInPath = $env:PATH -split ';' | Where-Object { $_ -eq $PY_BIN_DIR }
-    if (-not $pyInPath) {
-        Write-Host "To get started, add $PY_BIN_DIR to your PATH:"
+    # Check if srpt is in PATH
+    $srptInPath = $env:PATH -split ';' | Where-Object { $_ -eq $SRPT_BIN_DIR }
+    if (-not $srptInPath) {
+        Write-Host "To get started, add $SRPT_BIN_DIR to your PATH:"
         Write-Host ""
-        Write-Host "  `$env:PATH += `";$PY_BIN_DIR`""
+        Write-Host "  `$env:PATH += `";$SRPT_BIN_DIR`""
         Write-Host ""
         Write-Host "Or add to your PowerShell profile:"
-        Write-Host "  Add-Content -Path `$PROFILE -Value '`$env:PATH += `";$PY_BIN_DIR`"'"
+        Write-Host "  Add-Content -Path `$PROFILE -Value '`$env:PATH += `";$SRPT_BIN_DIR`"'"
         Write-Host ""
     }
     
     Write-Host "Quick start:"
-    Write-Host "  py                    # Start Python REPL"
-    Write-Host "  py my_script.py       # Run a Python script"
-    Write-Host "  py install requests   # Install a package"
+    Write-Host "  srpt                    # Start Python REPL"
+    Write-Host "  srpt my_script.py       # Run a Python script"
+    Write-Host "  srpt install requests   # Install a package"
 }
 
 # Main
 Write-Host "================================"
-Write-Host "Py Installer"
+Write-Host "srpt Installer"
 Write-Host "================================"
 Write-Host ""
 
 try {
     Install-Python
-    Install-PyTool
+    Install-Srpt
     Finalize-Install
 } catch {
     Write-Error $_

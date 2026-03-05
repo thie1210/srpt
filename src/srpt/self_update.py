@@ -142,8 +142,8 @@ def get_py_install_dir() -> Path:
         Path to py installation directory
     """
     # Check environment variable first
-    py_base_dir = os.environ.get("PY_BASE_DIR", str(Path.home() / ".local" / "share" / "py"))
-    return Path(py_base_dir) / "lib" / "py"
+    srpt_base_dir = os.environ.get("SRPT_BASE_DIR", str(Path.home() / ".local" / "share" / "srpt"))
+    return Path(srpt_base_dir) / "lib" / "srpt"
 
 
 def get_py_launcher_path() -> Path:
@@ -322,12 +322,12 @@ def get_python_bin() -> str:
     Returns:
         Path to Python binary
     """
-    py_base_dir = os.environ.get("PY_BASE_DIR", str(Path.home() / ".local" / "share" / "py"))
+    srpt_base_dir = os.environ.get("SRPT_BASE_DIR", str(Path.home() / ".local" / "share" / "srpt"))
     python_version = "3.13.12"
     build_tag = "20260211"
 
     python_bin = (
-        Path(py_base_dir)
+        Path(srpt_base_dir)
         / "python"
         / f"{python_version}-{build_tag}"
         / "python"

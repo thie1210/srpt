@@ -10,8 +10,8 @@ from typing import Optional, List, Tuple
 
 # Constants
 LATEST_RELEASE_JSON_URL = "https://raw.githubusercontent.com/astral-sh/python-build-standalone/latest-release/latest-release.json"
-PY_BASE_DIR = Path.home() / ".local" / "share" / "py"
-PYTHON_DIR = PY_BASE_DIR / "python"
+SRPT_BASE_DIR = Path.home() / ".local" / "share" / "srpt"
+PYTHON_DIR = SRPT_BASE_DIR / "python"
 RELEASE_TAG = "20260211"  # Current release tag
 
 
@@ -106,7 +106,7 @@ def download_python_version(version: str) -> Path:
         return binary_path
 
     print(f"srpt: Downloading Python {actual_version} for {target}…")
-    download_path = PY_BASE_DIR / "downloads" / asset_name
+    download_path = SRPT_BASE_DIR / "downloads" / asset_name
     download_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:

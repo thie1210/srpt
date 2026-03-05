@@ -68,10 +68,9 @@ def check_python_version_available(version: str) -> bool:
     Returns:
         True if version is available
     """
-    # Use the same logic as fetcher - check ~/.local/share/py/python/
-    # This is where Python installations are stored (for backward compatibility)
-    py_base = Path.home() / ".local" / "share" / "py"
-    python_dir = py_base / "python"
+    # Use the same logic as fetcher - check ~/.local/share/srpt/python/
+    srpt_base = Path.home() / ".local" / "share" / "srpt"
+    python_dir = srpt_base / "python"
 
     if not python_dir.exists():
         return False
@@ -98,9 +97,9 @@ def get_python_binary_path(version: str) -> Optional[Path]:
     Returns:
         Path to Python binary or None if not found
     """
-    # Use the same logic as fetcher - check ~/.local/share/py/python/
-    py_base = Path.home() / ".local" / "share" / "py"
-    python_dir = py_base / "python"
+    # Use the same logic as fetcher - check ~/.local/share/srpt/python/
+    srpt_base = Path.home() / ".local" / "share" / "srpt"
+    python_dir = srpt_base / "python"
 
     if not python_dir.exists():
         return None

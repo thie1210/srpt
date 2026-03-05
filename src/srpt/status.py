@@ -398,7 +398,7 @@ def format_status(show_cache: bool = False):
         total_size = format_size(cache["total_size_bytes"])
         console.print(f"  Size: {total_size}")
 
-        cache_dir = Path.home() / ".local" / "share" / "py" / "cache"
+        cache_dir = Path.home() / ".local" / "share" / "srpt" / "cache"
         console.print(f"  Location: {cache_dir}")
         console.print()
 

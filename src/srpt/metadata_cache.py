@@ -14,7 +14,7 @@ from typing import Dict, Any, Optional, List, Set
 class MetadataCache:
     """SQLite-based cache for package metadata from PyPI."""
 
-    CACHE_DIR = Path.home() / ".local" / "share" / "py" / "cache"
+    CACHE_DIR = Path.home() / ".local" / "share" / "srpt" / "cache"
     CACHE_DB = CACHE_DIR / "metadata.db"
     TTL_SECONDS = 7 * 24 * 60 * 60  # 7 days for metadata
 

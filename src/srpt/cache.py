@@ -15,7 +15,7 @@ from typing import List, Dict, Any, Optional
 class ResolutionCache:
     """SQLite-based cache for dependency resolution results."""
 
-    CACHE_DIR = Path.home() / ".local" / "share" / "py" / "cache"
+    CACHE_DIR = Path.home() / ".local" / "share" / "srpt" / "cache"
     CACHE_DB = CACHE_DIR / "resolution.db"
     TTL_SECONDS = 24 * 60 * 60  # 24 hours
 

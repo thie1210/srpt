@@ -19,6 +19,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Honors the "snakes eat snake food" philosophy
 - Perfect metaphor: serpents shed skin to grow (like package updates)
 
+## [0.2.16] - 2026-03-05
+
+### Changed
+- **BREAKING**: Changed data directory from `~/.local/share/py/` to `~/.local/share/srpt/` for consistency
+- Updated all paths to use `SRPT_BASE_DIR` environment variable (was `PY_BASE_DIR`)
+- Updated install.ps1 to use srpt naming throughout
+
+### Migration
+If you have existing Python installations in `~/.local/share/py/python/`, you can:
+1. Move them: `mv ~/.local/share/py/python ~/.local/share/srpt/python`
+2. Or re-download with: `srpt fetch <version>`
+
 ## [0.2.15] - 2026-03-05
 
 ### Fixed
