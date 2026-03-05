@@ -19,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Honors the "snakes eat snake food" philosophy
 - Perfect metaphor: serpents shed skin to grow (like package updates)
 
+## [0.2.21] - 2026-03-05
+
+### Fixed
+- Fixed backup naming bug in rebuild command that caused duplicate naming
+- Backup names now correctly formatted as `.venv.backup.upgrade.YYYY-MM-DD.python-X.Y`
+- Previously created duplicate names like `.venv.backup.upgrade.YYYY-MM-DD.upgrade.YYYY-MM-DD.python-X.Y`
+
 ## [0.2.20] - 2026-03-05
 
 ### Fixed
