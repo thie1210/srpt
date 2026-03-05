@@ -345,19 +345,19 @@ def format_health_report(health: Dict, full: bool = False) -> None:
         health: Health dict from health_check
         full: If True, show all packages
     """
-    print("\nPY HEALTH CHECK")
+    print("\nSRPT HEALTH CHECK")
 
-    # Py version
-    py_version = health.get("py_version", {})
-    current = py_version.get("current", "unknown")
-    latest = py_version.get("latest", "unknown")
-    update_available = py_version.get("update_available", False)
+    # srpt version
+    srpt_version = health.get("py_version", {})
+    current = srpt_version.get("current", "unknown")
+    latest = srpt_version.get("latest", "unknown")
+    update_available = srpt_version.get("update_available", False)
 
     if update_available:
-        print(f"  ⚠ py version: {current} (latest: {latest})")
+        print(f"  ⚠ srpt version: {current} (latest: {latest})")
         print("    → Run 'srpt update --self --apply' to update")
     else:
-        print(f"  ✓ py version: {current} (latest: {latest})")
+        print(f"  ✓ srpt version: {current} (latest: {latest})")
 
     # Python version
     python_version = health.get("python_version", {})

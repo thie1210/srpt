@@ -84,15 +84,9 @@ def run_pip_audit(
     # Check if we're in a venv
     venv_path = project_root / ".venv"
     if venv_path.exists():
-        # Use pip-audit's --python flag to specify the venv
-        if sys.platform == "win32":
-            python_path = venv_path / "Scripts" / "python.exe"
-        else:
-            python_path = venv_path / "bin" / "python"
-
-        if python_path.exists():
-            # Tell pip-audit to audit the venv's packages
-            cmd.extend(["--python", str(python_path)])
+        # Pass the project path to pip-audit
+        # It will auto-detect the venv
+        cmd.append(str(project_root))
 
     # Run pip-audit
     try:
