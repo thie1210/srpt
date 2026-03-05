@@ -81,6 +81,8 @@ def main():
     elif args.command_or_script == "status":
         show_cache = "--cache" in args.args or "-c" in args.args
         return show_status(show_cache)
+    elif args.command_or_script == "update":
+        return update_command(args.args)
     else:
         # If it's not a known command and not a file, it might be a script that doesn't exist yet
         # or we just default to helping the user
@@ -271,6 +273,44 @@ def show_status(show_cache: bool = False):
     from py.status import status_command
 
     status_command(show_cache)
+
+
+def update_command(args: List[str]):
+    """Update packages or py itself."""
+    import asyncio
+
+    # Parse update-specific arguments
+    update_self = "--self" in args
+    apply = "--apply" in args
+    check_only = "--check" in args
+    update_all = "--all" in args
+    security_only = "--security" in args
+
+    # Get target version if specified
+    target_version = None
+    for i, arg in enumerate(args):
+        if arg == "--version" and i + 1 < len(args):
+            target_version = args[i + 1]
+            break
+
+    # Get packages to update (non-flag arguments)
+    packages = [arg for arg in args if not arg.startswith("--") and arg != target_version]
+
+    # Import and run update
+    from py.update import update
+
+    asyncio.run(
+        update(
+            project_root=Path.cwd(),
+            update_self=update_self,
+            packages=packages if packages else None,
+            dry_run=not apply,
+            update_all=update_all,
+            security_only=security_only,
+            check_only=check_only,
+            target_version=target_version,
+        )
+    )
 
 
 if __name__ == "__main__":
