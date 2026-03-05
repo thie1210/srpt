@@ -67,11 +67,13 @@ Build `srpt` (serpent) - A modern, performant Python package manager inspired by
 - v0.2.14: Fixed version display consistency
 - v0.2.15: Fixed rebuild command Python path detection
 - v0.2.16: Changed data directory to ~/.local/share/srpt/ (was ~/.local/share/py/)
+- v0.2.17: Fixed all 'py' -> 'srpt' naming in user-facing messages
 
 ## Current State
 
-**Latest Release:** v0.2.16 (2026-03-05)
-- **BREAKING**: Data directory now at `~/.local/share/srpt/` (consistent with package name)
+**Latest Release:** v0.2.17 (2026-03-05)
+- All user-facing messages now use 'srpt' instead of 'py'
+- Data directory at `~/.local/share/srpt/` (consistent with package name)
 - Environment variable: `SRPT_BASE_DIR` (was `PY_BASE_DIR`)
 - All tests passing (42/42)
 - Ready for Phase 2
@@ -95,7 +97,7 @@ srpt/
 │   ├── updates-upgrades-health-system.md  # Phase 1-3 implementation plan (Phase 1 complete)
 │   └── eol-checking-system.md             # EOL checking plan (ready to implement)
 ├── src/srpt/
-│   ├── __init__.py              # Version: "0.2.16"
+│   ├── __init__.py              # Version: "0.2.17"
 │   ├── __main__.py              # CLI entry point, command routing
 │   ├── rebuild.py               # Rebuild command
 │   ├── health.py                # Health diagnostics, compatibility checking
@@ -118,6 +120,6 @@ srpt/
 │   └── test_resolver_httpx.py   # 1 test
 ├── install.sh                   # Unix installer
 ├── install.ps1                  # Windows installer
-├── pyproject.toml              # name="srpt", version="0.2.16"
+├── pyproject.toml              # name="srpt", version="0.2.17"
 └── README.md
 ```
