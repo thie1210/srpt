@@ -70,7 +70,7 @@ Build `srpt` (serpent) - A modern, performant Python package manager inspired by
 - v0.2.17: Fixed all 'py' -> 'srpt' naming in user-facing messages
 - v0.2.18: Fixed remaining 'PY UPDATE:' message in actual update path
 - v0.2.19: Fixed self-update extraction to handle py->srpt repo name transition
-- v0.2.20: Fixed health check to use 'srpt_version' instead of 'py_version'
+- v0.2.20: Fixed health check to use 'srpt_version' instead of 'py_version', comprehensive README update
 
 ## Current State
 
