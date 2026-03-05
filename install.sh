@@ -13,7 +13,7 @@
 set -euo pipefail
 
 # Configuration
-SRPT_VERSION="0.2.4"
+SRPT_VERSION="0.2.5"
 PYTHON_VERSION="3.13.12"
 PYTHON_BUILD_STANDALONE_TAG="20260211"
 SRPT_BASE_DIR="${SRPT_BASE_DIR:-$HOME/.local/share/srpt}"
