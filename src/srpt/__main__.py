@@ -48,13 +48,13 @@ def main():
     # Parse arguments
     args = parser.parse_args()
 
-    # Logic for use case 1: "py" (no args) -> download/start repl
+    # Logic for use case 1: "srpt" (no args) -> download/start repl
     with_version = getattr(args, "with_version", None)
 
     if not args.command_or_script:
         return run_repl(with_version)
 
-    # Logic for use case 2: "py <script.py>" -> download/run script
+    # Logic for use case 2: "srpt <script.py>" -> download/run script
     if args.command_or_script.endswith(".py") or Path(args.command_or_script).is_file():
         return run_script(args.command_or_script, args.args, with_version)
 
@@ -282,7 +282,7 @@ def show_status(show_cache: bool = False):
 
 
 def update_command(args: List[str]):
-    """Update packages or py itself."""
+    """Update packages or srpt itself."""
     import asyncio
 
     # Parse update-specific arguments

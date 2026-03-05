@@ -1,7 +1,7 @@
 """
 Health check functionality.
 
-Comprehensive diagnostics for py, Python, packages, and security.
+Comprehensive diagnostics for srpt, Python, packages, and security.
 """
 
 import asyncio
@@ -45,9 +45,9 @@ async def health_check(project_root: Path, full: bool = False) -> Dict:
         "errors": 0,
     }
 
-    # Check py version
-    health["py_version"] = await check_py_version()
-    if health["py_version"].get("update_available"):
+    # Check srpt version
+    health["srpt_version"] = await check_srpt_version()
+    if health["srpt_version"].get("update_available"):
         health["warnings"] += 1
 
     # Check Python version
@@ -72,9 +72,9 @@ async def health_check(project_root: Path, full: bool = False) -> Dict:
     return health
 
 
-async def check_py_version() -> Dict:
+async def check_srpt_version() -> Dict:
     """
-    Check if py is up to date.
+    Check if srpt is up to date.
 
     Returns:
         Dict with version information

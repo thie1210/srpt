@@ -37,7 +37,7 @@ async def update_packages(
         dry_run_header()
 
     print("Package updates not yet implemented")
-    print("  → Use 'srpt update --self' to update py itself")
+    print("  → Use 'srpt update --self' to update srpt itself")
     return False
 
 
@@ -58,7 +58,7 @@ async def update(
 
     Args:
         project_root: Path to project root
-        update_self: If True, update py itself
+        update_self: If True, update srpt itself
         packages: Specific packages to update
         dry_run: If True, only show what would be done
         update_all: If True, ignore constraints

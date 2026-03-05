@@ -9,7 +9,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock, AsyncMock
 from srpt.health import (
     health_check,
-    check_py_version,
+    check_srpt_version,
     check_python_version,
     check_cache_status,
     check_security,
@@ -20,13 +20,13 @@ from srpt import __version__
 
 
 class TestCheckPyVersion:
-    """Tests for check_py_version function."""
+    """Tests for check_srpt_version function."""
 
     @pytest.mark.asyncio
     async def test_no_update_available(self):
         """Test when srpt is up to date."""
         with patch("srpt.self_update.check_for_updates", return_value=None):
-            result = await check_py_version()
+            result = await check_srpt_version()
 
             assert result["current"] == __version__
             assert result["latest"] == __version__
@@ -40,7 +40,7 @@ class TestCheckPyVersion:
         higher_version = f"{Version(__version__).major}.{Version(__version__).minor + 1}.0"
 
         with patch("srpt.self_update.check_for_updates", return_value=higher_version):
-            result = await check_py_version()
+            result = await check_srpt_version()
 
             assert result["current"] == __version__
             assert result["latest"] == higher_version
@@ -50,7 +50,7 @@ class TestCheckPyVersion:
     async def test_github_api_error(self):
         """Test handling of GitHub API errors."""
         with patch("srpt.self_update.check_for_updates", side_effect=Exception("API error")):
-            result = await check_py_version()
+            result = await check_srpt_version()
 
             assert result["current"] == __version__
             assert result["latest"] == __version__

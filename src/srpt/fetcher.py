@@ -178,7 +178,7 @@ def get_python_binary(version: Optional[str] = None) -> Path:
 
 
 def fetch_command(version: Optional[str] = None, list_available: bool = False):
-    """Handle the 'py fetch' command."""
+    """Handle the 'srpt fetch' command."""
     if list_available:
         print("srpt: Available Python versions:")
         for v in get_available_python_versions():
@@ -193,9 +193,9 @@ def fetch_command(version: Optional[str] = None, list_available: bool = False):
     if not version:
         print("srpt: No version specified. Use 'srpt fetch <version>' or 'srpt fetch --available'")
         print("Examples:")
-        print("  py fetch 3.14       Install Python 3.14")
-        print("  py fetch 3.14.3     Install Python 3.14.3")
-        print("  py fetch --available  List available versions")
+        print("  srpt fetch 3.14       Install Python 3.14")
+        print("  srpt fetch 3.14.3     Install Python 3.14.3")
+        print("  srpt fetch --available  List available versions")
         sys.exit(1)
 
     binary_path = download_python_version(version)
@@ -203,7 +203,7 @@ def fetch_command(version: Optional[str] = None, list_available: bool = False):
 
 
 def versions_command():
-    """Handle the 'py versions' command."""
+    """Handle the 'srpt versions' command."""
     installed = get_installed_python_versions()
 
     if not installed:

@@ -73,7 +73,7 @@ async def get_latest_release_info() -> dict:
 
             if response.status_code == 404:
                 # No releases yet, fall back to tags
-                tags_url = "https://api.github.com/repos/thie1210/py/tags"
+                tags_url = "https://api.github.com/repos/thie1210/srpt/tags"
                 response = await client.get(tags_url)
                 response.raise_for_status()
 
@@ -120,9 +120,9 @@ async def download_release(version: str, target_dir: Path) -> Path:
         httpx.HTTPError: If download fails
     """
     url = GITHUB_ARCHIVE.format(version=version)
-    target_file = target_dir / f"py-{version}.tar.gz"
+    target_file = target_dir / f"srpt-{version}.tar.gz"
 
-    print(f"  Downloading py {version}...")
+    print(f"  Downloading srpt {version}...")
 
     async with httpx.AsyncClient(http2=True, timeout=60.0, follow_redirects=True) as client:
         response = await client.get(url)
@@ -136,10 +136,10 @@ async def download_release(version: str, target_dir: Path) -> Path:
 
 def get_py_install_dir() -> Path:
     """
-    Get the py installation directory.
+    Get the srpt installation directory.
 
     Returns:
-        Path to py installation directory
+        Path to srpt installation directory
     """
     # Check environment variable first
     srpt_base_dir = os.environ.get("SRPT_BASE_DIR", str(Path.home() / ".local" / "share" / "srpt"))
@@ -148,20 +148,20 @@ def get_py_install_dir() -> Path:
 
 def get_py_launcher_path() -> Path:
     """
-    Get the py launcher script path.
+    Get the srpt launcher script path.
 
     Returns:
-        Path to py launcher script
+        Path to srpt launcher script
     """
     py_bin_dir = os.environ.get("PY_BIN_DIR", str(Path.home() / ".local" / "bin"))
-    return Path(py_bin_dir) / "py"
+    return Path(srpt_bin_dir) / "srpt"
 
 
 async def self_update(
     dry_run: bool = True, check_only: bool = False, target_version: Optional[str] = None
 ) -> bool:
     """
-    Update py to latest or specific version.
+    Update srpt to latest or specific version.
 
     Args:
         dry_run: If True, only show what would be done
@@ -184,7 +184,7 @@ async def self_update(
         latest = await check_for_updates()
 
         if latest is None:
-            print(f"\n✓ py is up to date")
+            print(f"\n✓ srpt is up to date")
             print(f"  Current version: {current_version}")
             return True
         else:
@@ -208,7 +208,7 @@ async def self_update(
     from packaging.version import Version
 
     if Version(version) <= Version(current_version):
-        print(f"\n✓ py is up to date")
+        print(f"\n✓ srpt is up to date")
         print(f"  Current version: {current_version}")
         print(f"  Target version:  {version}")
         return True
@@ -217,7 +217,7 @@ async def self_update(
     if dry_run:
         dry_run_header()
 
-        print("PY UPDATE:")
+        print("SRPT UPDATE:")
         print(f"  Current: {current_version}")
         print(f"  Latest:  {version}")
 
@@ -259,7 +259,7 @@ async def self_update(
             tar.extractall(tmpdir_path)
 
         # Find extracted directory
-        extracted_dir = tmpdir_path / f"py-{version}"
+        extracted_dir = tmpdir_path / f"srpt-{version}"
         if not extracted_dir.exists():
             print_error("Failed to find extracted files")
             return False
@@ -269,7 +269,7 @@ async def self_update(
 
         # Backup current installation
         if install_dir.exists():
-            backup_dir = install_dir.parent / f"py.backup.{current_version}"
+            backup_dir = install_dir.parent / f"srpt.backup.{current_version}"
             print(f"  Backing up to {backup_dir.name}...")
             if backup_dir.exists():
                 shutil.rmtree(backup_dir)
@@ -307,7 +307,7 @@ async def self_update(
         )
         await proc.wait()
 
-        print_success(f"py updated to {version}")
+        print_success(f"srpt updated to {version}")
         print()
         print("  → Run 'srpt --version' to verify")
         print("  → Run 'srpt health' to check system health")

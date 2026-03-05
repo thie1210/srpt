@@ -1,4 +1,4 @@
-"""Utility modules for py package manager."""
+"""Utility modules for srpt package manager."""
 
 from .confirm import dry_run_header, confirm_apply
 from .constraints import get_updatable_version, parse_constraint

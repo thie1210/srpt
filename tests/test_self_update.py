@@ -118,7 +118,7 @@ class TestDownloadRelease:
             result = await download_release("0.1.6", tmp_path)
 
             assert result.exists()
-            assert result.name == "py-0.1.6.tar.gz"
+            assert result.name == "srpt-0.1.6.tar.gz"
             assert result.read_bytes() == b"fake tar.gz content"
 
     @pytest.mark.asyncio
