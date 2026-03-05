@@ -134,7 +134,7 @@ async def download_release(version: str, target_dir: Path) -> Path:
     return target_file
 
 
-def get_py_install_dir() -> Path:
+def get_srpt_install_dir() -> Path:
     """
     Get the srpt installation directory.
 
@@ -258,14 +258,21 @@ async def self_update(
         with tarfile.open(tar_file, "r:gz") as tar:
             tar.extractall(tmpdir_path)
 
-        # Find extracted directory
+        # Find extracted directory (handle both old 'py' and new 'srpt' naming)
         extracted_dir = tmpdir_path / f"srpt-{version}"
         if not extracted_dir.exists():
+            # Try old naming for backward compatibility
+            extracted_dir = tmpdir_path / f"py-{version}"
+
+        if not extracted_dir.exists():
             print_error("Failed to find extracted files")
+            print_error(
+                f"  Expected: {tmpdir_path / f'srpt-{version}'} or {tmpdir_path / f'py-{version}'}"
+            )
             return False
 
         # Get installation directory
-        install_dir = get_py_install_dir()
+        install_dir = get_srpt_install_dir()
 
         # Backup current installation
         if install_dir.exists():
