@@ -99,7 +99,7 @@ def run_repl(with_version: Optional[str] = None):
     """Run the Python REPL with the latest stable version."""
     from srpt.fetcher import get_python_binary
 
-    print("Py: Checking for latest stable Python…")
+    print("srpt: Checking for latest stable Python…")
     binary_path = get_python_binary(with_version)
 
     # Setup environment to use .venv if it exists
@@ -116,9 +116,9 @@ def run_repl(with_version: Optional[str] = None):
             current_pp = env.get("PYTHONPATH", "")
             new_pp = str(site_packages[0])
             env["PYTHONPATH"] = f"{new_pp}{os.pathsep}{current_pp}" if current_pp else new_pp
-            print(f"Py: Using virtual environment at {venv_dir}")
+            print(f"srpt: Using virtual environment at {venv_dir}")
 
-    print(f"Py: Launching REPL ({binary_path})")
+    print(f"srpt: Launching REPL ({binary_path})")
     try:
         subprocess.call([str(binary_path)], env=env)
     except KeyboardInterrupt:
@@ -134,7 +134,7 @@ def run_script(script_path, args, with_version: Optional[str] = None):
         print(f"Error: Script not found: {script_path}")
         sys.exit(1)
 
-    print(f"Py: Checking for latest stable Python for {script_path}…")
+    print(f"srpt: Checking for latest stable Python for {script_path}…")
     binary_path = get_python_binary(with_version)
 
     # Setup environment to use .venv if it exists
@@ -150,7 +150,7 @@ def run_script(script_path, args, with_version: Optional[str] = None):
             current_pp = env.get("PYTHONPATH", "")
             new_pp = str(site_packages[0])
             env["PYTHONPATH"] = f"{new_pp}{os.pathsep}{current_pp}" if current_pp else new_pp
-            print(f"Py: Using virtual environment at {venv_dir}")
+            print(f"srpt: Using virtual environment at {venv_dir}")
 
     # TODO: Check for PEP 723 inline metadata for dependencies
 
@@ -165,22 +165,22 @@ def install_packages(packages, with_version: Optional[str] = None):
         sys.exit(1)
 
     if with_version:
-        print(f"Py: Note: --with-version flag specified but install currently uses system Python")
-        print(f"Py: Python version management will be integrated in a future update")
+        print(f"srpt: Note: --with-version flag specified but install currently uses system Python")
+        print(f"srpt: Python version management will be integrated in a future update")
 
     import asyncio
     from srpt.install_workflow import install_command
     from srpt.pypi import PackageNotFoundError
 
-    print(f"Py: Installing packages: {packages}")
+    print(f"srpt: Installing packages: {packages}")
     try:
         asyncio.run(install_command(packages))
     except PackageNotFoundError as e:
-        print(f"\nPy: {e}")
+        print(f"\nsrpt: {e}")
         sys.exit(1)
     except ValueError as e:
         # Handle other value errors
-        print(f"\nPy: Error: {e}")
+        print(f"\nsrpt: Error: {e}")
         sys.exit(1)
 
 
@@ -195,7 +195,7 @@ def uninstall_packages(packages):
 
     venv_dir = Path(".venv")
     if not venv_dir.exists():
-        print(f"Py: No virtual environment found at {venv_dir}")
+        print(f"srpt: No virtual environment found at {venv_dir}")
         sys.exit(1)
 
     if os.name == "posix":
@@ -220,8 +220,8 @@ def list_packages():
 
     venv_dir = Path(".venv")
     if not venv_dir.exists():
-        print(f"Py: No virtual environment found at {venv_dir}")
-        print("Py: Install packages first with 'py install <package>'")
+        print(f"srpt: No virtual environment found at {venv_dir}")
+        print("srpt: Install packages first with 'srpt install <package>'")
         return
 
     if os.name == "posix":
@@ -245,7 +245,7 @@ def add_packages(packages):
         print("Error: No packages provided")
         sys.exit(1)
 
-    print(f"Py: Adding packages: {packages}")
+    print(f"srpt: Adding packages: {packages}")
     # TODO: Implement project package addition logic
     print("Note: Package addition is not yet implemented.")
 

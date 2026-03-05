@@ -191,8 +191,8 @@ async def self_update(
             print(f"\n⚠ Update available")
             print(f"  Current version: {current_version}")
             print(f"  Latest version:  {latest}")
-            print(f"\n  Run 'py update --self' to see changes")
-            print(f"  Run 'py update --self --apply' to update")
+            print(f"\n  Run 'srpt update --self' to see changes")
+            print(f"  Run 'srpt update --self --apply' to update")
             return True
 
     # Get target version
@@ -231,7 +231,7 @@ async def self_update(
                     if line.strip():
                         print(f"  {line}")
 
-        print(f"\nRun 'py update --self --apply' to update")
+        print(f"\nRun 'srpt update --self --apply' to update")
         return True
 
     # Actually perform the update
@@ -309,8 +309,8 @@ async def self_update(
 
         print_success(f"py updated to {version}")
         print()
-        print("  → Run 'py --version' to verify")
-        print("  → Run 'py health' to check system health")
+        print("  → Run 'srpt --version' to verify")
+        print("  → Run 'srpt health' to check system health")
 
         return True
 

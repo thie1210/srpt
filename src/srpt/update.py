@@ -37,7 +37,7 @@ async def update_packages(
         dry_run_header()
 
     print("Package updates not yet implemented")
-    print("  → Use 'py update --self' to update py itself")
+    print("  → Use 'srpt update --self' to update py itself")
     return False
 
 

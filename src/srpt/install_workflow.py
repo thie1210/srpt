@@ -32,13 +32,13 @@ async def install_command(packages: List[str]):
     for pkg in packages:
         existing_version = get_installed_version(pkg, site_packages)
         if existing_version:
-            print(f"Py: {pkg}=={existing_version} is already installed")
-            print(f"Py: Use 'py install --upgrade {pkg}' to upgrade")
+            print(f"srpt: {pkg}=={existing_version} is already installed")
+            print(f"srpt: Use 'srpt install --upgrade {pkg}' to upgrade")
         else:
             packages_to_install.append(pkg)
 
     if not packages_to_install:
-        print("Py: All packages are already installed")
+        print("srpt: All packages are already installed")
         return
 
     # 1. Resolve dependencies
@@ -48,8 +48,8 @@ async def install_command(packages: List[str]):
 
         candidates = await parallel_resolve(packages_to_install)
     except Exception as e:
-        print(f"Py: Parallel resolver failed: {e}")
-        print("Py: Using standard resolver…")
+        print(f"srpt: Parallel resolver failed: {e}")
+        print("srpt: Using standard resolver…")
         candidates = await resolve(packages_to_install)
 
     # Filter out already-installed packages (including dependencies)
@@ -61,18 +61,18 @@ async def install_command(packages: List[str]):
         if existing_version:
             try:
                 if parse_version(existing_version) == parse_version(str(c.version)):
-                    print(f"Py: {c.name}=={c.version} is already installed (skipping)")
+                    print(f"srpt: {c.name}=={c.version} is already installed (skipping)")
                     continue
             except Exception:
                 # Fall back to string comparison
                 if existing_version == str(c.version):
-                    print(f"Py: {c.name}=={c.version} is already installed (skipping)")
+                    print(f"srpt: {c.name}=={c.version} is already installed (skipping)")
                     continue
 
         candidates_to_install.append(c)
 
     if not candidates_to_install:
-        print("Py: All packages and dependencies are already installed")
+        print("srpt: All packages and dependencies are already installed")
         return
 
     dependencies = [
@@ -89,7 +89,7 @@ async def install_command(packages: List[str]):
     # We'll use a .venv directory in the current working directory
     venv_dir = Path(".venv")
     if not venv_dir.exists():
-        print(f"Py: Creating virtual environment in {venv_dir}…")
+        print(f"srpt: Creating virtual environment in {venv_dir}…")
         import venv
 
         # Create without pip as we'll manage packages ourselves
@@ -133,10 +133,10 @@ async def install_command(packages: List[str]):
 
     failures = [(name, error) for name, success, error in results if not success]
     if failures:
-        print(f"Py: Failed to install {len(failures)} package(s):")
+        print(f"srpt: Failed to install {len(failures)} package(s):")
         for name, error in failures:
             print(f"  - {name}: {error}")
         raise RuntimeError(f"Installation failed for {len(failures)} package(s)")
 
     installed_count = sum(1 for _, success, _ in results if success)
-    print(f"Py: Successfully installed {installed_count} package(s) into {target_dir}")
+    print(f"srpt: Successfully installed {installed_count} package(s) into {target_dir}")

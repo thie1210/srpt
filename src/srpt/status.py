@@ -269,26 +269,26 @@ def format_status(show_cache: bool = False):
             console.print("  ✓ .venv exists")
     else:
         console.print("  ✗ No .venv found", style="yellow")
-        console.print("  → Run 'py install <pkg>' to create one", style="dim")
+        console.print("  → Run 'srpt install <pkg>' to create one", style="dim")
     console.print()
 
     console.print("PYTHON", style="bold cyan")
     if python["latest_version"]:
         console.print(f"  Version: {python['latest_version']}")
         console.print(
-            f"  → Run 'py versions' to see all {python['installed_count']} installed", style="dim"
+            f"  → Run 'srpt versions' to see all {python['installed_count']} installed", style="dim"
         )
-        console.print("  → Run 'py fetch <version>' to install another", style="dim")
+        console.print("  → Run 'srpt fetch <version>' to install another", style="dim")
     else:
         console.print("  ✗ No Python versions managed", style="yellow")
-        console.print("  → Run 'py fetch 3.14' to install Python", style="dim")
+        console.print("  → Run 'srpt fetch 3.14' to install Python", style="dim")
     console.print()
 
     console.print("PACKAGES", style="bold cyan")
     if packages["has_venv"]:
         count = packages["installed_count"]
         console.print(f"  Installed: {count}")
-        console.print("  → Run 'py list' for details", style="dim")
+        console.print("  → Run 'srpt list' for details", style="dim")
     else:
         console.print("  ✗ No packages installed (no .venv)", style="yellow")
     console.print()
@@ -299,11 +299,11 @@ def format_status(show_cache: bool = False):
         console.print(f"  Installed: {deps['installed_count']} in .venv")
         console.print()
         console.print("  To TRACK dependencies for your project:", style="dim")
-        console.print("    → Run 'py init' to create pyproject.toml (coming soon)", style="dim")
-        console.print("    → Then use 'py add <pkg>' to track packages", style="dim")
+        console.print("    → Run 'srpt init' to create pyproject.toml (coming soon)", style="dim")
+        console.print("    → Then use 'srpt add <pkg>' to track packages", style="dim")
         console.print()
         console.print("  Or continue manually:", style="dim")
-        console.print("    → Run 'py install <pkg>' (not tracked)", style="dim")
+        console.print("    → Run 'srpt install <pkg>' (not tracked)", style="dim")
     else:
         tracked_str = ", ".join(deps["tracked_packages"])
         if len(tracked_str) > 50:
@@ -334,22 +334,22 @@ def format_status(show_cache: bool = False):
             console.print("  TRACKING workflow (recommended):", style="dim")
             if deps["missing"]:
                 console.print(
-                    f"    → Run 'py install {deps['missing'][0]}' to install tracked package",
+                    f"    → Run 'srpt install {deps['missing'][0]}' to install tracked package",
                     style="dim",
                 )
             if deps["extra"]:
                 console.print(
-                    f"    → Run 'py remove {deps['extra'][0]}' to stop tracking", style="dim"
+                    f"    → Run 'srpt remove {deps['extra'][0]}' to stop tracking", style="dim"
                 )
 
             console.print()
             console.print("  MANUAL workflow (advanced):", style="dim")
-            console.print("    → Run 'py install <pkg>' (not tracked)", style="dim")
-            console.print("    → Run 'py uninstall <pkg>' (from .venv only)", style="dim")
+            console.print("    → Run 'srpt install <pkg>' (not tracked)", style="dim")
+            console.print("    → Run 'srpt uninstall <pkg>' (from .venv only)", style="dim")
 
             console.print()
             console.print("  Or sync automatically:", style="dim")
-            console.print("    → Run 'py sync' to synchronize", style="dim")
+            console.print("    → Run 'srpt sync' to synchronize", style="dim")
     console.print()
 
     # Health summary
@@ -358,13 +358,13 @@ def format_status(show_cache: bool = False):
 
     if health["vulnerabilities"] > 0:
         console.print(f"  ✗ Vulnerabilities: {health['vulnerabilities']} found", style="red")
-        console.print("    → Run 'py audit' for details", style="dim")
+        console.print("    → Run 'srpt audit' for details", style="dim")
     else:
         console.print("  ✓ Vulnerabilities: 0 found", style="green")
 
     if health["outdated"] > 0:
         console.print(f"  ⚠ Outdated: {health['outdated']} packages", style="yellow")
-        console.print("    → Run 'py update' to update", style="dim")
+        console.print("    → Run 'srpt update' to update", style="dim")
     else:
         console.print("  ✓ All packages up to date", style="green")
 
@@ -372,7 +372,7 @@ def format_status(show_cache: bool = False):
         console.print(
             f"  ⚠ {health['warnings']} warnings, {health['errors']} errors", style="yellow"
         )
-        console.print("    → Run 'py health' for full report", style="dim")
+        console.print("    → Run 'srpt health' for full report", style="dim")
     else:
         console.print("  ✓ All checks passed", style="green")
 
@@ -402,16 +402,16 @@ def format_status(show_cache: bool = False):
     console.print("QUICK REFERENCE", style="bold cyan")
 
     if deps["mode"] == "manual":
-        console.print("  py install <pkg>      Install package manually", style="dim")
-        console.print("  py list               Show installed packages", style="dim")
+        console.print("  srpt install <pkg>      Install package manually", style="dim")
+        console.print("  srpt list               Show installed packages", style="dim")
     else:
-        console.print("  py add <pkg>          Track + install (recommended)", style="dim")
-        console.print("  py remove <pkg>       Untrack package", style="dim")
-        console.print("  py install            Install all tracked dependencies", style="dim")
+        console.print("  srpt add <pkg>          Track + install (recommended)", style="dim")
+        console.print("  srpt remove <pkg>       Untrack package", style="dim")
+        console.print("  srpt install            Install all tracked dependencies", style="dim")
 
-    console.print("  py fetch <version>    Install Python version", style="dim")
-    console.print("  py versions           List Python versions", style="dim")
-    console.print("  py --help             Show all commands", style="dim")
+    console.print("  srpt fetch <version>    Install Python version", style="dim")
+    console.print("  srpt versions           List Python versions", style="dim")
+    console.print("  srpt --help             Show all commands", style="dim")
 
 
 def status_command(show_cache: bool = False):

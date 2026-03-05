@@ -155,7 +155,7 @@ def format_vulnerability(vuln: Dict) -> str:
         f"    {vuln_id_str}: {description}",
         f"    Severity: {severity}",
         f"    Fixed in: {fix_str}",
-        f"    → Run 'py update {package_name} --apply'",
+        f"    → Run 'srpt update {package_name} --apply'",
     ]
 
     return "\n".join(lines)
@@ -219,7 +219,7 @@ async def run_audit(
         # TODO: Implement auto-fix
         print("  Auto-fix not yet implemented")
     else:
-        print("\n  Run 'py audit --fix' to auto-fix all")
+        print("\n  Run 'srpt audit --fix' to auto-fix all")
 
     return vulnerabilities
 

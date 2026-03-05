@@ -57,13 +57,13 @@ class Requirement:
 
 class SimpleReporter(BaseReporter):
     def resolving_started(self):
-        print("Py: Starting dependency resolution…")
+        print("srpt: Starting dependency resolution…")
 
     def resolving_finished(self):
-        print("Py: Dependency resolution finished.")
+        print("srpt: Dependency resolution finished.")
 
     def pin_candidate(self, candidate):
-        print(f"Py: Pinning {candidate.name}=={candidate.version}")
+        print(f"srpt: Pinning {candidate.name}=={candidate.version}")
 
 
 class PyPIProvider(AbstractProvider):
@@ -149,7 +149,7 @@ class PyPIProvider(AbstractProvider):
             requires_dist = data.get("requires_dist", [])
         else:
             # Not in cache, fetch from PyPI
-            print(f"Py: Getting dependencies for {candidate.name}=={candidate.version}…")
+            print(f"srpt: Getting dependencies for {candidate.name}=={candidate.version}…")
             url = f"https://pypi.org/pypi/{candidate.name}/{candidate.version}/json"
             try:
                 with urllib.request.urlopen(url) as response:
@@ -162,7 +162,7 @@ class PyPIProvider(AbstractProvider):
                         "data": data,
                     }
             except Exception as e:
-                print(f"Py: Error getting deps for {candidate.name}: {e}")
+                print(f"srpt: Error getting deps for {candidate.name}: {e}")
                 return []
 
         # Basic marker evaluation
@@ -192,7 +192,7 @@ async def resolve(requirements_list: List[str]) -> List[Candidate]:
     cached = cache.get(requirements_list)
 
     if cached:
-        print(f"Py: Using cached resolution ({len(cached)} packages)")
+        print(f"srpt: Using cached resolution ({len(cached)} packages)")
         # Reconstruct candidates from cached data
         candidates = []
         for item in cached:

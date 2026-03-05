@@ -43,7 +43,7 @@ async def fetch_version_metadata_batch(
                 else:
                     return (package, version, {"requires_dist": [], "data": {}})
         except Exception as e:
-            print(f"Py: Warning: Failed to fetch {package}=={version}: {e}")
+            print(f"srpt: Warning: Failed to fetch {package}=={version}: {e}")
             return (package, version, {"requires_dist": [], "data": {}})
 
     # Use HTTP/2 for better performance with connection pooling
@@ -128,7 +128,7 @@ async def parallel_resolve(requirements_list: List[str]) -> List[Candidate]:
     cached = cache.get(requirements_list)
 
     if cached:
-        print(f"Py: Using cached resolution ({len(cached)} packages)")
+        print(f"srpt: Using cached resolution ({len(cached)} packages)")
         candidates = []
         for item in cached:
             candidates.append(
@@ -147,19 +147,19 @@ async def parallel_resolve(requirements_list: List[str]) -> List[Candidate]:
     metadata_cache = MetadataCache()
 
     # Phase 1: Predict packages using learned dependency graph
-    print("Py: Predicting dependencies from learned data…")
+    print("srpt: Predicting dependencies from learned data…")
     predicted_packages = metadata_cache.predict_dependencies(requirements_list, max_depth=3)
 
     if len(predicted_packages) > len(requirements_list):
         print(
-            f"Py: Predicted {len(predicted_packages)} packages (from {len(requirements_list)} requested)"
+            f"srpt: Predicted {len(predicted_packages)} packages (from {len(requirements_list)} requested)"
         )
     else:
-        print(f"Py: No predictions yet, will learn from this installation")
+        print(f"srpt: No predictions yet, will learn from this installation")
         predicted_packages = set(p.lower() for p in requirements_list)
 
     # Phase 2: Batch fetch package metadata in PARALLEL
-    print(f"Py: Pre-fetching package metadata for {len(predicted_packages)} packages…")
+    print(f"srpt: Pre-fetching package metadata for {len(predicted_packages)} packages…")
 
     # Normalize package names (strip extras and version specifiers)
     # e.g., "Django~=3.2" -> "django", "package[extra]>=1.0" -> "package"
@@ -193,7 +193,7 @@ async def parallel_resolve(requirements_list: List[str]) -> List[Candidate]:
 
     if packages_to_fetch:
         print(
-            f"Py: Fetching {len(packages_to_fetch)} packages in parallel ({len(cached_metadata)} cached)"
+            f"srpt: Fetching {len(packages_to_fetch)} packages in parallel ({len(cached_metadata)} cached)"
         )
         try:
             new_metadata = await client.get_project_metadata_batch(packages_to_fetch)
@@ -204,32 +204,32 @@ async def parallel_resolve(requirements_list: List[str]) -> List[Candidate]:
                 metadata_cache.set(pkg_name, metadata, dependencies=[])
 
         except Exception as e:
-            print(f"Py: Warning: Parallel fetch failed: {e}")
-            print("Py: Falling back to sequential fetching in resolver")
+            print(f"srpt: Warning: Parallel fetch failed: {e}")
+            print("srpt: Falling back to sequential fetching in resolver")
             prefetched_metadata = cached_metadata
     else:
-        print(f"Py: All {len(cached_metadata)} packages already cached!")
+        print(f"srpt: All {len(cached_metadata)} packages already cached!")
         prefetched_metadata = cached_metadata
 
     # Phase 3: Pre-fetch version-specific metadata in PARALLEL
-    print("Py: Extracting top candidate versions…")
+    print("srpt: Extracting top candidate versions…")
     top_candidates = extract_top_candidates(prefetched_metadata, max_per_package=3)
 
     if top_candidates:
         print(
-            f"Py: Pre-fetching version metadata for {len(top_candidates)} candidates in parallel…"
+            f"srpt: Pre-fetching version metadata for {len(top_candidates)} candidates in parallel…"
         )
         try:
             version_metadata = await fetch_version_metadata_batch(client, top_candidates)
-            print(f"Py: Pre-fetched {len(version_metadata)} version metadata entries")
+            print(f"srpt: Pre-fetched {len(version_metadata)} version metadata entries")
         except Exception as e:
-            print(f"Py: Warning: Version metadata fetch failed: {e}")
+            print(f"srpt: Warning: Version metadata fetch failed: {e}")
             version_metadata = {}
     else:
         version_metadata = {}
 
     # Phase 4: Run resolution with pre-fetched metadata
-    print("Py: Resolving dependencies…")
+    print("srpt: Resolving dependencies…")
 
     # Create provider and inject all cached data
     provider = PyPIProvider(client)
@@ -256,7 +256,7 @@ async def parallel_resolve(requirements_list: List[str]) -> List[Candidate]:
 
     # Update metadata cache with learned dependencies
     if discovered_deps:
-        print(f"Py: Learned {len(discovered_deps)} new dependency relationships")
+        print(f"srpt: Learned {len(discovered_deps)} new dependency relationships")
         for pkg_name, deps in discovered_deps.items():
             pkg_lower = pkg_name.lower()
             metadata = prefetched_metadata.get(pkg_lower) or provider._metadata_cache.get(

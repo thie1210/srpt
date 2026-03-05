@@ -355,7 +355,7 @@ def format_health_report(health: Dict, full: bool = False) -> None:
 
     if update_available:
         print(f"  ⚠ py version: {current} (latest: {latest})")
-        print("    → Run 'py update --self --apply' to update")
+        print("    → Run 'srpt update --self --apply' to update")
     else:
         print(f"  ✓ py version: {current} (latest: {latest})")
 
@@ -413,7 +413,7 @@ def format_health_report(health: Dict, full: bool = False) -> None:
             print(f"    • {name} {current} → {latest}")
         if len(outdated) > 10:
             print(f"    ... and {len(outdated) - 10} more")
-        print("  → Run 'py update' to update all")
+        print("  → Run 'srpt update' to update all")
     else:
         print("  ✓ All packages up to date")
 
@@ -448,4 +448,4 @@ def format_health_report(health: Dict, full: bool = False) -> None:
             print(f"  ✗ {errors} errors")
 
     if not full:
-        print(f"  → Run 'py health --full' for all {installed} packages")
+        print(f"  → Run 'srpt health --full' for all {installed} packages")

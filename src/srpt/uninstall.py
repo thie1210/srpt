@@ -28,7 +28,7 @@ def uninstall_package(package_name: str, site_packages: Path) -> bool:
     dist_info = find_dist_info(package_name, site_packages)
 
     if not dist_info:
-        print(f"Py: Package '{package_name}' is not installed")
+        print(f"srpt: Package '{package_name}' is not installed")
         return False
 
     # Get version for user feedback
@@ -39,9 +39,9 @@ def uninstall_package(package_name: str, site_packages: Path) -> bool:
     parts = name.rsplit("-", 1)
     if len(parts) == 2:
         version = parts[1]
-        print(f"Py: Uninstalling {package_name}=={version}…")
+        print(f"srpt: Uninstalling {package_name}=={version}…")
     else:
-        print(f"Py: Uninstalling {package_name}…")
+        print(f"srpt: Uninstalling {package_name}…")
 
     # Parse RECORD file
     record_path = dist_info / "RECORD"
@@ -58,14 +58,14 @@ def uninstall_package(package_name: str, site_packages: Path) -> bool:
                 shutil.rmtree(file_path)
                 removed_count += 1
         except Exception as e:
-            print(f"Py: Warning: Could not remove {file_path}: {e}")
+            print(f"srpt: Warning: Could not remove {file_path}: {e}")
 
     # Remove dist-info
     try:
         shutil.rmtree(dist_info)
         removed_count += 1
     except Exception as e:
-        print(f"Py: Warning: Could not remove dist-info: {e}")
+        print(f"srpt: Warning: Could not remove dist-info: {e}")
 
     # Also try to remove the package directory (if it exists)
     # Some packages have both dist-info and the package directory
@@ -85,7 +85,7 @@ def uninstall_package(package_name: str, site_packages: Path) -> bool:
                 except Exception:
                     pass
 
-    print(f"Py: Successfully uninstalled {package_name} ({removed_count} files removed)")
+    print(f"srpt: Successfully uninstalled {package_name} ({removed_count} files removed)")
     return True
 
 
@@ -94,10 +94,10 @@ def list_command(site_packages: Path):
     packages = list_installed_packages(site_packages)
 
     if not packages:
-        print("Py: No packages installed in this environment")
+        print("srpt: No packages installed in this environment")
         return
 
-    print(f"Py: {len(packages)} packages installed:\n")
+    print(f"srpt: {len(packages)} packages installed:\n")
 
     for pkg in packages:
         print(f"  {pkg['name']:<30} {pkg['version']}")

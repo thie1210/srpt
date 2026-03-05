@@ -56,7 +56,7 @@ def get_available_python_versions() -> List[str]:
 
         return sorted(versions, reverse=True)
     except Exception as e:
-        print(f"Py: Could not fetch available versions: {e}")
+        print(f"srpt: Could not fetch available versions: {e}")
         return ["3.14.3", "3.13.12", "3.12.12", "3.11.14", "3.10.19"]
 
 
@@ -91,7 +91,7 @@ def download_python_version(version: str) -> Path:
 
     actual_version = matching_full[0]
     if actual_version != version:
-        print(f"Py: Resolved {version} to {actual_version}")
+        print(f"srpt: Resolved {version} to {actual_version}")
 
     asset_name = f"cpython-{actual_version}+{RELEASE_TAG}-{target}-install_only.tar.gz"
 
@@ -102,17 +102,17 @@ def download_python_version(version: str) -> Path:
     binary_path = target_dir / "python" / binary_name
 
     if binary_path.exists():
-        print(f"Py: Python {actual_version} already installed at {target_dir}")
+        print(f"srpt: Python {actual_version} already installed at {target_dir}")
         return binary_path
 
-    print(f"Py: Downloading Python {actual_version} for {target}…")
+    print(f"srpt: Downloading Python {actual_version} for {target}…")
     download_path = PY_BASE_DIR / "downloads" / asset_name
     download_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:
         urllib.request.urlretrieve(download_url, download_path)
 
-        print(f"Py: Extracting to {target_dir}…")
+        print(f"srpt: Extracting to {target_dir}…")
         target_dir.mkdir(parents=True, exist_ok=True)
 
         if asset_name.endswith(".tar.gz"):
@@ -121,7 +121,7 @@ def download_python_version(version: str) -> Path:
 
         download_path.unlink()
 
-        print(f"Py: Successfully installed Python {actual_version}")
+        print(f"srpt: Successfully installed Python {actual_version}")
         return binary_path
     except Exception as e:
         if target_dir.exists():
@@ -143,7 +143,7 @@ def get_python_binary(version: Optional[str] = None) -> Path:
 
     if version:
         if "." not in version:
-            print(f"Py: Invalid version format '{version}'. Use format like '3.14' or '3.14.3'")
+            print(f"srpt: Invalid version format '{version}'. Use format like '3.14' or '3.14.3'")
             sys.exit(1)
 
         major_minor = ".".join(version.split(".")[:2])
@@ -153,32 +153,34 @@ def get_python_binary(version: Optional[str] = None) -> Path:
         if matching_installed:
             matching_installed.sort(key=lambda x: x[0], reverse=True)
             selected_version, binary_path = matching_installed[0]
-            print(f"Py: Using Python {selected_version} (matched {version})")
+            print(f"srpt: Using Python {selected_version} (matched {version})")
             return binary_path
 
-        print(f"Py: Python {version} not installed. Downloading…")
+        print(f"srpt: Python {version} not installed. Downloading…")
         full_versions = get_available_python_versions()
         matching_full = [v for v in full_versions if v.startswith(major_minor)]
         if matching_full:
             version_to_download = matching_full[0]
             return download_python_version(version_to_download)
         else:
-            print(f"Py: Python {version} not available. Available: {', '.join(full_versions[:5])}")
+            print(
+                f"srpt: Python {version} not available. Available: {', '.join(full_versions[:5])}"
+            )
             sys.exit(1)
 
     if not installed:
-        print("Py: No Python versions installed. Downloading 3.13.12…")
+        print("srpt: No Python versions installed. Downloading 3.13.12…")
         return download_python_version("3.13.12")
 
     version, binary_path = installed[0]
-    print(f"Py: Using Python {version}")
+    print(f"srpt: Using Python {version}")
     return binary_path
 
 
 def fetch_command(version: Optional[str] = None, list_available: bool = False):
     """Handle the 'py fetch' command."""
     if list_available:
-        print("Py: Available Python versions:")
+        print("srpt: Available Python versions:")
         for v in get_available_python_versions():
             installed = any(
                 v == inst_v or v.startswith(inst_v + ".")
@@ -189,7 +191,7 @@ def fetch_command(version: Optional[str] = None, list_available: bool = False):
         return
 
     if not version:
-        print("Py: No version specified. Use 'py fetch <version>' or 'py fetch --available'")
+        print("srpt: No version specified. Use 'srpt fetch <version>' or 'srpt fetch --available'")
         print("Examples:")
         print("  py fetch 3.14       Install Python 3.14")
         print("  py fetch 3.14.3     Install Python 3.14.3")
@@ -197,7 +199,7 @@ def fetch_command(version: Optional[str] = None, list_available: bool = False):
         sys.exit(1)
 
     binary_path = download_python_version(version)
-    print(f"Py: Python binary at: {binary_path}")
+    print(f"srpt: Python binary at: {binary_path}")
 
 
 def versions_command():
@@ -205,10 +207,10 @@ def versions_command():
     installed = get_installed_python_versions()
 
     if not installed:
-        print("Py: No Python versions installed")
-        print("Use 'py fetch <version>' to install one")
+        print("srpt: No Python versions installed")
+        print("Use 'srpt fetch <version>' to install one")
         return
 
-    print(f"Py: {len(installed)} Python version(s) installed:")
+    print(f"srpt: {len(installed)} Python version(s) installed:")
     for version, path in installed:
         print(f"  {version:10s} {path}")
