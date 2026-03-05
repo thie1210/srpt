@@ -44,7 +44,8 @@ def get_project_status() -> Dict:
             potential_libs = list(venv_path.glob("lib/python*/site-packages"))
             if potential_libs:
                 lib_path = potential_libs[0]
-                version_match = lib_path.name
+                # The parent directory is "python3.13" or similar
+                version_match = lib_path.parent.name
                 if "python" in version_match:
                     venv_python_version = version_match.replace("python", "").strip()
         else:
@@ -273,8 +274,10 @@ def format_status(show_cache: bool = False):
     console.print()
 
     console.print("PYTHON", style="bold cyan")
-    if python["latest_version"]:
-        console.print(f"  Version: {python['latest_version']}")
+    if project["has_venv"] and project["venv_python_version"]:
+        console.print(f"  Version: {project['venv_python_version']} (in .venv)")
+    elif python["latest_version"]:
+        console.print(f"  Version: {python['latest_version']} (srpt managed)")
         console.print(
             f"  → Run 'srpt versions' to see all {python['installed_count']} installed", style="dim"
         )

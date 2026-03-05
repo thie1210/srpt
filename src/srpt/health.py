@@ -357,9 +357,37 @@ async def check_compatibility(project_root: Path) -> Dict:
 
     if not venv_path.exists():
         return {
-            "python_312": "no venv",
-            "python_313": "no venv",
+            "current_version": f"{sys.version_info.major}.{sys.version_info.minor}",
+            "status": "no venv",
+            "checked_versions": [],
         }
+
+    # Get the venv's Python version
+    if sys.platform == "win32":
+        python_path = venv_path / "Scripts" / "python.exe"
+    else:
+        python_path = venv_path / "bin" / "python"
+
+    current_version = None
+    if python_path.exists():
+        import subprocess
+
+        try:
+            result = subprocess.run(
+                [str(python_path), "--version"], capture_output=True, text=True, timeout=5
+            )
+            if result.returncode == 0:
+                version_str = result.stdout.strip() or result.stderr.strip()
+                version_str = version_str.replace("Python ", "")
+                # Extract major.minor
+                parts = version_str.split(".")
+                if len(parts) >= 2:
+                    current_version = f"{parts[0]}.{parts[1]}"
+        except Exception:
+            pass
+
+    if not current_version:
+        current_version = f"{sys.version_info.major}.{sys.version_info.minor}"
 
     # Get site-packages path
     if sys.platform == "win32":
@@ -370,13 +398,29 @@ async def check_compatibility(project_root: Path) -> Dict:
 
     if not site_packages or not site_packages.exists():
         return {
-            "python_312": "no packages",
-            "python_313": "no packages",
+            "current_version": current_version,
+            "status": "no packages",
+            "checked_versions": [],
         }
 
+    # Determine which versions to check
+    # Check current version and nearby versions
+    try:
+        major = int(current_version.split(".")[0])
+        minor = int(current_version.split(".")[1])
+
+        # Check current, previous, and next versions
+        versions_to_check = [
+            f"{major}.{minor - 1}" if minor > 0 else None,
+            current_version,
+            f"{major}.{minor + 1}",
+        ]
+        versions_to_check = [v for v in versions_to_check if v is not None]
+    except Exception:
+        versions_to_check = [current_version]
+
     # Check compatibility for each Python version
-    python_312_compatible = True
-    python_313_compatible = True
+    version_compatibility = {}
     total_packages = 0
 
     for dist_info in site_packages.glob("*.dist-info"):
@@ -396,25 +440,40 @@ async def check_compatibility(project_root: Path) -> Dict:
                         break
 
             if requires_python:
-                # Check if Python 3.12 is compatible
-                if not is_python_version_compatible("3.12", requires_python):
-                    python_312_compatible = False
+                # Check each version
+                for version in versions_to_check:
+                    if version not in version_compatibility:
+                        version_compatibility[version] = True
 
-                # Check if Python 3.13 is compatible
-                if not is_python_version_compatible("3.13", requires_python):
-                    python_313_compatible = False
+                    if not is_python_version_compatible(version, requires_python):
+                        version_compatibility[version] = False
         except Exception:
             continue
 
     if total_packages == 0:
         return {
-            "python_312": "no packages",
-            "python_313": "no packages",
+            "current_version": current_version,
+            "status": "no packages",
+            "checked_versions": [],
         }
 
+    # Format results
+    checked_results = []
+    for version in versions_to_check:
+        if version in version_compatibility:
+            compatible = version_compatibility[version]
+            checked_results.append(
+                {
+                    "version": version,
+                    "compatible": compatible,
+                    "is_current": version == current_version,
+                }
+            )
+
     return {
-        "python_312": "✓ compatible" if python_312_compatible else "✗ incompatible",
-        "python_313": "✓ compatible" if python_313_compatible else "✗ incompatible",
+        "current_version": current_version,
+        "total_packages": total_packages,
+        "checked_versions": checked_results,
     }
 
 
@@ -545,11 +604,31 @@ def format_health_report(health: Dict, full: bool = False) -> None:
 
     # Compatibility
     compatibility = health.get("compatibility", {})
-    python_312 = compatibility.get("python_312", "unknown")
-    python_313 = compatibility.get("python_313", "unknown")
+    current_version = compatibility.get("current_version", "unknown")
+    checked_versions = compatibility.get("checked_versions", [])
 
-    print(f"  Python 3.12: {python_312}")
-    print(f"  Python 3.13: {python_313}")
+    if not checked_versions:
+        status = compatibility.get("status", "unknown")
+        print(f"  Status: {status}")
+    else:
+        print(f"  Current: Python {current_version}")
+        print(f"  Checked {compatibility.get('total_packages', 0)} packages for compatibility:")
+
+        for version_info in checked_versions:
+            version = version_info.get("version", "unknown")
+            compatible = version_info.get("compatible", True)
+            is_current = version_info.get("is_current", False)
+
+            if compatible:
+                status = "✓"
+            else:
+                status = "✗"
+
+            label = f"Python {version}"
+            if is_current:
+                label += " (current)"
+
+            print(f"  {status} {label}")
 
     # Summary
     print("\nSUMMARY")
