@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "srpt"
-version = "0.1.0"
+version = "0.2.0"
 description = "A performance profiled package manager"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -51,7 +51,7 @@ benchmark = [
 ]
 
 [project.scripts]
-py = "py.__main__:main"
+srpt = "srpt.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
