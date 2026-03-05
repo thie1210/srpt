@@ -50,8 +50,8 @@ PYTHON
 
 PACKAGES
   Installed: 42
-  ⚠ Outdated: 2 (django, pillow)
-  ⚠ Security: 1 (django EOL April 2024)
+  ! Outdated: 2 (django, pillow)
+  ! Security: 1 (django EOL April 2024)
   → Run 'py health' for details
 
 DEPENDENCIES
@@ -60,7 +60,7 @@ DEPENDENCIES
 
 HEALTH
   ✓ Vulnerabilities: 0 found
-  ⚠ 2 warnings, 0 errors
+  ! 2 warnings, 0 errors
   → Run 'py health' for full report
 ```
 
@@ -76,14 +76,14 @@ PY HEALTH CHECK
 SECURITY
   ✓ Vulnerabilities: 0 found
   ✓ Last audit: 2 hours ago
-  ⚠ Django 3.2.18: Security support ends April 2024
+  ! Django 3.2.18: Security support ends April 2024
     → Run 'py upgrade django' for LTS version
 
 DEPENDENCIES
   ✓ requests 2.31.0 (latest)
   ✓ flask 3.0.0 (latest)
-  ⚠ django 3.2.18 (latest: 4.2.11)
-  ⚠ pillow 10.0.0 (latest: 10.2.0)
+  ! django 3.2.18 (latest: 4.2.11)
+  ! pillow 10.0.0 (latest: 10.2.0)
   → Run 'py update' to update all
 
 COMPATIBILITY
@@ -179,7 +179,7 @@ UPGRADING:
 
 HEALTH CHECK:
   ✓ All packages compatible
-  ⚠ 2 deprecation warnings
+  ! 2 deprecation warnings
   → Check your application manually
 
 STATUS:
@@ -883,7 +883,7 @@ dependencies = [
 ```
 $ py rebuild --with-version 3.12
 
-⚠ Multiple backups found:
+! Multiple backups found:
   1. .venv.backup.upgrade.2024-03-01.django-4.2 (3 days old)
   2. .venv.backup.upgrade.2024-02-28.flask-3.0 (6 days old)
 
@@ -894,7 +894,7 @@ Which backup to restore? [1/2/skip]:
 ```
 $ py rebuild --with-version 3.12
 
-⚠ Old backup found: .venv.backup.upgrade.2024-02-20.django-4.2 (12 days old)
+! Old backup found: .venv.backup.upgrade.2024-02-20.django-4.2 (12 days old)
 Keep it? [y/N]:
 ```
 
@@ -915,7 +915,7 @@ $ py update django
 DRY RUN - No changes will be made
 
 PACKAGES TO UPDATE:
-  ⚠ django 3.2.18 (pinned with ==)
+  ! django 3.2.18 (pinned with ==)
     → Remove version pin to allow updates
     → Or use 'py upgrade django' for major version change
 ```
@@ -927,7 +927,7 @@ $ py update django
 DRY RUN - No changes will be made
 
 PACKAGES TO UPDATE:
-  ⚠ django 3.2.18 (constrained to <4.0)
+  ! django 3.2.18 (constrained to <4.0)
     Latest within constraint: 3.2.19
     Latest overall: 4.2.11
     → Run 'py update django --apply' to update to 3.2.19

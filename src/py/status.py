@@ -214,6 +214,33 @@ def get_cache_stats() -> Dict:
     }
 
 
+def get_health_summary() -> Dict:
+    """Get quick health summary for status command."""
+    import asyncio
+    from py.health import health_check
+
+    try:
+        # Run health check synchronously
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        health = loop.run_until_complete(health_check(Path.cwd(), full=False))
+        loop.close()
+
+        return {
+            "warnings": health.get("warnings", 0),
+            "errors": health.get("errors", 0),
+            "vulnerabilities": health.get("security", {}).get("count", 0),
+            "outdated": len(health.get("dependencies", {}).get("outdated", [])),
+        }
+    except Exception:
+        return {
+            "warnings": 0,
+            "errors": 0,
+            "vulnerabilities": 0,
+            "outdated": 0,
+        }
+
+
 def format_status(show_cache: bool = False):
     """Format and print status dashboard."""
     from rich.console import Console
@@ -323,6 +350,32 @@ def format_status(show_cache: bool = False):
             console.print()
             console.print("  Or sync automatically:", style="dim")
             console.print("    → Run 'py sync' to synchronize", style="dim")
+    console.print()
+
+    # Health summary
+    console.print("HEALTH", style="bold cyan")
+    health = get_health_summary()
+
+    if health["vulnerabilities"] > 0:
+        console.print(f"  ✗ Vulnerabilities: {health['vulnerabilities']} found", style="red")
+        console.print("    → Run 'py audit' for details", style="dim")
+    else:
+        console.print("  ✓ Vulnerabilities: 0 found", style="green")
+
+    if health["outdated"] > 0:
+        console.print(f"  ⚠ Outdated: {health['outdated']} packages", style="yellow")
+        console.print("    → Run 'py update' to update", style="dim")
+    else:
+        console.print("  ✓ All packages up to date", style="green")
+
+    if health["warnings"] > 0 or health["errors"] > 0:
+        console.print(
+            f"  ⚠ {health['warnings']} warnings, {health['errors']} errors", style="yellow"
+        )
+        console.print("    → Run 'py health' for full report", style="dim")
+    else:
+        console.print("  ✓ All checks passed", style="green")
+
     console.print()
 
     if show_cache:
