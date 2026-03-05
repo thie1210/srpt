@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Honors the "snakes eat snake food" philosophy
 - Perfect metaphor: serpents shed skin to grow (like package updates)
 
+## [0.2.17] - 2026-03-05
+
+### Fixed
+- Replaced all 'py' references with 'srpt' in user-facing messages
+- Fixed self-update message: 'py is up to date' -> 'srpt is up to date'
+- Fixed example commands in fetcher.py
+- Renamed check_py_version to check_srpt_version in health.py
+
 ## [0.2.16] - 2026-03-05
 
 ### Changed
