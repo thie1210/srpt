@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Honors the "snakes eat snake food" philosophy
 - Perfect metaphor: serpents shed skin to grow (like package updates)
 
+## [0.2.19] - 2026-03-05
+
+### Fixed
+- Fixed self-update to handle both 'py' and 'srpt' directory names during extraction
+- Renamed get_py_install_dir to get_srpt_install_dir
+- Added better error messages showing expected extraction paths
+- Handles transition from old 'py' repo name to new 'srpt' repo name
+
 ## [0.2.18] - 2026-03-05
 
 ### Fixed
