@@ -83,6 +83,10 @@ def main():
         return show_status(show_cache)
     elif args.command_or_script == "update":
         return update_command(args.args)
+    elif args.command_or_script == "audit":
+        return audit_command(args.args)
+    elif args.command_or_script == "health":
+        return health_command(args.args)
     else:
         # If it's not a known command and not a file, it might be a script that doesn't exist yet
         # or we just default to helping the user
@@ -311,6 +315,63 @@ def update_command(args: List[str]):
             target_version=target_version,
         )
     )
+
+
+def audit_command(args: List[str]):
+    """Run security audit on installed packages."""
+    import asyncio
+
+    # Parse audit-specific arguments
+    fix = "--fix" in args
+    json_output = "--json" in args
+
+    # Get CVEs to ignore
+    ignore_cves = []
+    for i, arg in enumerate(args):
+        if arg == "--ignore" and i + 1 < len(args):
+            # Get all following arguments until next flag
+            for j in range(i + 1, len(args)):
+                if args[j].startswith("--"):
+                    break
+                ignore_cves.append(args[j])
+            break
+
+    # Import and run audit
+    from py.audit import run_audit
+
+    asyncio.run(
+        run_audit(
+            project_root=Path.cwd(),
+            fix=fix,
+            ignore_cves=ignore_cves if ignore_cves else None,
+            json_output=json_output,
+        )
+    )
+
+
+def health_command(args: List[str]):
+    """Run comprehensive health check."""
+    import asyncio
+    import json
+
+    # Parse health-specific arguments
+    full = "--full" in args
+    json_output = "--json" in args
+    fix = "--fix" in args
+
+    # Import and run health check
+    from py.health import health_check, format_health_report
+
+    health = asyncio.run(health_check(project_root=Path.cwd(), full=full))
+
+    if json_output:
+        print(json.dumps(health, indent=2))
+    else:
+        format_health_report(health, full=full)
+
+    # TODO: Implement --fix
+    if fix:
+        print("\n  Auto-fix not yet implemented")
 
 
 if __name__ == "__main__":
