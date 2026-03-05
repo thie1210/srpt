@@ -8,7 +8,7 @@ from unittest.mock import patch, MagicMock, call
 import subprocess
 import sys
 
-from py.audit import (
+from srpt.audit import (
     ensure_pip_audit_installed,
     run_pip_audit,
     format_vulnerability,
@@ -71,7 +71,7 @@ class TestRunPipAudit:
         python = bin_dir / "python"
         python.touch()
 
-        with patch("py.audit.ensure_pip_audit_installed", return_value=True):
+        with patch("srpt.audit.ensure_pip_audit_installed", return_value=True):
             with patch("subprocess.run") as mock_run:
                 mock_run.return_value = MagicMock(
                     returncode=0,
@@ -96,7 +96,7 @@ class TestRunPipAudit:
         python = bin_dir / "python"
         python.touch()
 
-        with patch("py.audit.ensure_pip_audit_installed", return_value=True):
+        with patch("srpt.audit.ensure_pip_audit_installed", return_value=True):
             with patch("subprocess.run") as mock_run:
                 mock_run.return_value = MagicMock(
                     returncode=0,
@@ -114,7 +114,7 @@ class TestRunPipAudit:
 
     def test_no_venv_uses_current_environment(self, tmp_path):
         """Test that without venv, pip-audit uses current environment."""
-        with patch("py.audit.ensure_pip_audit_installed", return_value=True):
+        with patch("srpt.audit.ensure_pip_audit_installed", return_value=True):
             with patch("subprocess.run") as mock_run:
                 mock_run.return_value = MagicMock(
                     returncode=0,
@@ -137,7 +137,7 @@ class TestRunPipAudit:
         python = bin_dir / "python"
         python.touch()
 
-        with patch("py.audit.ensure_pip_audit_installed", return_value=True):
+        with patch("srpt.audit.ensure_pip_audit_installed", return_value=True):
             with patch("subprocess.run") as mock_run:
                 # Simulate pip-audit failing due to broken venv
                 mock_run.return_value = MagicMock(
@@ -152,7 +152,7 @@ class TestRunPipAudit:
 
     def test_parses_vulnerabilities(self, tmp_path):
         """Test parsing of vulnerability JSON output."""
-        with patch("py.audit.ensure_pip_audit_installed", return_value=True):
+        with patch("srpt.audit.ensure_pip_audit_installed", return_value=True):
             with patch("subprocess.run") as mock_run:
                 vuln_json = """[
                     {
@@ -174,7 +174,7 @@ class TestRunPipAudit:
 
     def test_filters_ignored_cves(self, tmp_path):
         """Test filtering of ignored CVEs."""
-        with patch("py.audit.ensure_pip_audit_installed", return_value=True):
+        with patch("srpt.audit.ensure_pip_audit_installed", return_value=True):
             with patch("subprocess.run") as mock_run:
                 vuln_json = """[
                     {

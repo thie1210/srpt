@@ -1,5 +1,5 @@
 import asyncio
-from py.resolver import resolve
+from srpt.resolver import resolve
 
 
 async def test_resolve_httpx():

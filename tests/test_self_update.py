@@ -7,13 +7,13 @@ from pathlib import Path
 from unittest.mock import AsyncMock, patch, MagicMock
 import httpx
 
-from py.self_update import (
+from srpt.self_update import (
     check_for_updates,
     get_latest_release_info,
     download_release,
     self_update,
 )
-from py import __version__
+from srpt import __version__
 
 
 class TestCheckForUpdates:
@@ -157,7 +157,7 @@ class TestSelfUpdate:
     @pytest.mark.asyncio
     async def test_dry_run_shows_available_update(self):
         """Test dry-run shows update information."""
-        with patch("py.self_update.get_latest_release_info") as mock_info:
+        with patch("srpt.self_update.get_latest_release_info") as mock_info:
             from packaging.version import Version
 
             higher_version = str(Version(__version__) + 1)
@@ -172,7 +172,7 @@ class TestSelfUpdate:
     @pytest.mark.asyncio
     async def test_already_up_to_date(self):
         """Test when already on latest version."""
-        with patch("py.self_update.get_latest_release_info") as mock_info:
+        with patch("srpt.self_update.get_latest_release_info") as mock_info:
             mock_info.return_value = {
                 "version": __version__,
                 "changelog": "",
@@ -184,7 +184,7 @@ class TestSelfUpdate:
     @pytest.mark.asyncio
     async def test_check_only_mode(self):
         """Test check-only mode."""
-        with patch("py.self_update.check_for_updates") as mock_check:
+        with patch("srpt.self_update.check_for_updates") as mock_check:
             mock_check.return_value = None  # No update available
 
             result = await self_update(dry_run=False, check_only=True)

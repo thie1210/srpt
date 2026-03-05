@@ -1,5 +1,5 @@
 import asyncio
-from py.pypi import PyPIClient
+from srpt.pypi import PyPIClient
 
 
 async def get_wheel_url():
