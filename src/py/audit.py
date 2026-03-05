@@ -78,20 +78,21 @@ def run_pip_audit(
     if not ensure_pip_audit_installed():
         return []
 
-    # Build command
+    # Build command - use current Python (managed Python)
     cmd = [sys.executable, "-m", "pip_audit", "--format", "json"]
 
     # Check if we're in a venv
     venv_path = project_root / ".venv"
     if venv_path.exists():
-        # Use the venv's Python
+        # Use pip-audit's --python flag to specify the venv
         if sys.platform == "win32":
             python_path = venv_path / "Scripts" / "python.exe"
         else:
             python_path = venv_path / "bin" / "python"
 
         if python_path.exists():
-            cmd = [str(python_path), "-m", "pip_audit", "--format", "json"]
+            # Tell pip-audit to audit the venv's packages
+            cmd.extend(["--python", str(python_path)])
 
     # Run pip-audit
     try:
@@ -111,7 +112,7 @@ def run_pip_audit(
 
         # Filter ignored CVEs
         if ignore_cves:
-            data = [vuln for vuln in data if vuln.get("id", "").get("id", "") not in ignore_cves]
+            data = [vuln for vuln in data if vuln.get("id", {}).get("id", "") not in ignore_cves]
 
         return data
 
