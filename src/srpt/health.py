@@ -351,11 +351,95 @@ async def check_compatibility(project_root: Path) -> Dict:
     Returns:
         Dict with compatibility information
     """
-    # TODO: Implement compatibility checking
+    import sys
+
+    venv_path = project_root / ".venv"
+
+    if not venv_path.exists():
+        return {
+            "python_312": "no venv",
+            "python_313": "no venv",
+        }
+
+    # Get site-packages path
+    if sys.platform == "win32":
+        site_packages = venv_path / "Lib" / "site-packages"
+    else:
+        potential = list(venv_path.glob("lib/python*/site-packages"))
+        site_packages = potential[0] if potential else None
+
+    if not site_packages or not site_packages.exists():
+        return {
+            "python_312": "no packages",
+            "python_313": "no packages",
+        }
+
+    # Check compatibility for each Python version
+    python_312_compatible = True
+    python_313_compatible = True
+    total_packages = 0
+
+    for dist_info in site_packages.glob("*.dist-info"):
+        try:
+            metadata_file = dist_info / "METADATA"
+            if not metadata_file.exists():
+                continue
+
+            total_packages += 1
+
+            # Read metadata to find Requires-Python
+            requires_python = None
+            with open(metadata_file, "r") as f:
+                for line in f:
+                    if line.startswith("Requires-Python:"):
+                        requires_python = line.split(":", 1)[1].strip()
+                        break
+
+            if requires_python:
+                # Check if Python 3.12 is compatible
+                if not is_python_version_compatible("3.12", requires_python):
+                    python_312_compatible = False
+
+                # Check if Python 3.13 is compatible
+                if not is_python_version_compatible("3.13", requires_python):
+                    python_313_compatible = False
+        except Exception:
+            continue
+
+    if total_packages == 0:
+        return {
+            "python_312": "no packages",
+            "python_313": "no packages",
+        }
+
     return {
-        "python_312": "unknown",
-        "python_313": "unknown",
+        "python_312": "✓ compatible" if python_312_compatible else "✗ incompatible",
+        "python_313": "✓ compatible" if python_313_compatible else "✗ incompatible",
     }
+
+
+def is_python_version_compatible(python_version: str, requires_python: str) -> bool:
+    """
+    Check if a Python version is compatible with a Requires-Python specifier.
+
+    Args:
+        python_version: Python version string (e.g., "3.12")
+        requires_python: Requires-Python specifier (e.g., ">=3.8,<4.0")
+
+    Returns:
+        True if compatible, False otherwise
+    """
+    try:
+        from packaging.specifiers import SpecifierSet
+        from packaging.version import Version
+
+        specifiers = SpecifierSet(requires_python)
+        version = Version(python_version)
+
+        return version in specifiers
+    except Exception:
+        # If we can't parse, assume compatible
+        return True
 
 
 def format_health_report(health: Dict, full: bool = False) -> None:
