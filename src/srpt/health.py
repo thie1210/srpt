@@ -354,7 +354,7 @@ def format_health_report(health: Dict, full: bool = False) -> None:
     update_available = srpt_version.get("update_available", False)
 
     if update_available:
-        print(f"  ⚠ srpt version: {current} (latest: {latest})")
+        print(f"  ! srpt version: {current} (latest: {latest})")
         print("    → Run 'srpt update --self --apply' to update")
     else:
         print(f"  ✓ srpt version: {current} (latest: {latest})")
@@ -366,7 +366,7 @@ def format_health_report(health: Dict, full: bool = False) -> None:
 
     print(f"  ✓ Python: {version}")
     if not venv:
-        print("    ⚠ No .venv found")
+        print("    ! No .venv found")
 
     # Cache
     cache = health.get("cache", {})
@@ -405,7 +405,7 @@ def format_health_report(health: Dict, full: bool = False) -> None:
     print(f"  Installed: {installed}")
 
     if outdated:
-        print(f"  ⚠ Outdated: {len(outdated)}")
+        print(f"  ! Outdated: {len(outdated)}")
         for pkg in outdated[:10]:  # Show first 10
             name = pkg.get("name", "unknown")
             current = pkg.get("current", "unknown")
@@ -443,7 +443,7 @@ def format_health_report(health: Dict, full: bool = False) -> None:
         print("  ✓ All checks passed")
     else:
         if warnings:
-            print(f"  ⚠ {warnings} warnings")
+            print(f"  ! {warnings} warnings")
         if errors:
             print(f"  ✗ {errors} errors")
 

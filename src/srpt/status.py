@@ -316,7 +316,7 @@ def format_status(show_cache: bool = False):
         if deps["is_sync"]:
             console.print("  Status: ✓ Synchronized", style="green")
         else:
-            console.print("  Status: ⚠ Out of sync", style="yellow")
+            console.print("  Status: ! Out of sync", style="yellow")
 
             if deps["missing"]:
                 missing_str = ", ".join(deps["missing"])
@@ -363,14 +363,14 @@ def format_status(show_cache: bool = False):
         console.print("  ✓ Vulnerabilities: 0 found", style="green")
 
     if health["outdated"] > 0:
-        console.print(f"  ⚠ Outdated: {health['outdated']} packages", style="yellow")
+        console.print(f"  ! Outdated: {health['outdated']} packages", style="yellow")
         console.print("    → Run 'srpt update' to update", style="dim")
     else:
         console.print("  ✓ All packages up to date", style="green")
 
     if health["warnings"] > 0 or health["errors"] > 0:
         console.print(
-            f"  ⚠ {health['warnings']} warnings, {health['errors']} errors", style="yellow"
+            f"  ! {health['warnings']} warnings, {health['errors']} errors", style="yellow"
         )
         console.print("    → Run 'srpt health' for full report", style="dim")
     else:

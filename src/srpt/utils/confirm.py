@@ -85,7 +85,7 @@ def print_warning(message: str) -> None:
     Args:
         message: The warning message
     """
-    print(f"  ⚠ {message}")
+    print(f"  ! {message}")
 
 
 def print_error(message: str) -> None:

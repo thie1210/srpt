@@ -188,7 +188,7 @@ async def self_update(
             print(f"  Current version: {current_version}")
             return True
         else:
-            print(f"\n⚠ Update available")
+            print(f"\n! Update available")
             print(f"  Current version: {current_version}")
             print(f"  Latest version:  {latest}")
             print(f"\n  Run 'srpt update --self' to see changes")
