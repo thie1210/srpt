@@ -19,7 +19,7 @@ from .utils.confirm import dry_run_header, print_success, print_error, print_war
 
 
 GITHUB_API = "https://api.github.com/repos/thie1210/py/releases/latest"
-GITHUB_RELEASES = "https://github.com/thie1210/py/releases/download/v{version}/py-{version}.tar.gz"
+GITHUB_ARCHIVE = "https://github.com/thie1210/py/archive/refs/tags/v{version}.tar.gz"
 
 
 async def check_for_updates() -> Optional[str]:
@@ -119,7 +119,7 @@ async def download_release(version: str, target_dir: Path) -> Path:
     Raises:
         httpx.HTTPError: If download fails
     """
-    url = GITHUB_RELEASES.format(version=version)
+    url = GITHUB_ARCHIVE.format(version=version)
     target_file = target_dir / f"py-{version}.tar.gz"
 
     print(f"  Downloading py {version}...")
