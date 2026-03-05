@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# Py Installer - Bootstrap script for the py package manager
-# This script downloads Python and py without requiring an existing Python installation
+# srpt Installer - Bootstrap script for the srpt package manager
+# This script downloads Python and srpt without requiring an existing Python installation
 #
 # Usage:
-#   curl -sSL https://raw.githubusercontent.com/thie1210/py/main/install.sh | sh
-#   curl -sSL https://raw.githubusercontent.com/thie1210/py/main/install.sh | sh -s -- --help
+#   curl -sSL https://raw.githubusercontent.com/thie1210/srpt/main/install.sh | sh
+#   curl -sSL https://raw.githubusercontent.com/thie1210/srpt/main/install.sh | sh -s -- --help
 #
 # Based on rustup and uv installation patterns
 #
@@ -13,11 +13,11 @@
 set -euo pipefail
 
 # Configuration
-PY_VERSION="0.1.6"
+SRPT_VERSION="0.1.0"
 PYTHON_VERSION="3.13.12"
 PYTHON_BUILD_STANDALONE_TAG="20260211"
-PY_BASE_DIR="${PY_BASE_DIR:-$HOME/.local/share/py}"
-PY_BIN_DIR="${PY_BIN_DIR:-$HOME/.local/bin}"
+SRPT_BASE_DIR="${SRPT_BASE_DIR:-$HOME/.local/share/srpt}"
+SRPT_BIN_DIR="${SRPT_BIN_DIR:-$HOME/.local/bin}"
 
 # Platform detection
 get_platform() {
@@ -77,9 +77,9 @@ download() {
 # Main installation
 install_python() {
     local platform="$(get_platform)"
-    local python_dir="$PY_BASE_DIR/python/$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG"
+    local python_dir="$SRPT_BASE_DIR/python/$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG"
     local python_url="https://github.com/astral-sh/python-build-standalone/releases/download/$PYTHON_BUILD_STANDALONE_TAG/cpython-$PYTHON_VERSION+$PYTHON_BUILD_STANDALONE_TAG-$platform-install_only.tar.gz"
-    local download_file="$PY_BASE_DIR/downloads/python.tar.gz"
+    local download_file="$SRPT_BASE_DIR/downloads/python.tar.gz"
     
     if [ -f "$python_dir/python/bin/python3" ]; then
         echo "  ✓ Python $PYTHON_VERSION already installed"
@@ -90,7 +90,7 @@ install_python() {
     echo "PYTHON"
     echo "  Installing Python $PYTHON_VERSION for $platform..."
     
-    mkdir -p "$PY_BASE_DIR/downloads"
+    mkdir -p "$SRPT_BASE_DIR/downloads"
     mkdir -p "$python_dir"
     
     if ! download "$python_url" "$download_file"; then
@@ -106,38 +106,38 @@ install_python() {
 
 # Install py itself
 install_py() {
-    local python_bin="$PY_BASE_DIR/python/$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG/python/bin/python3"
+    local python_bin="$SRPT_BASE_DIR/python/$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG/python/bin/python3"
     
     echo ""
     echo "PY"
-    echo "  Installing py $PY_VERSION..."
+    echo "  Installing py $SRPT_VERSION..."
     
     # Create lib directory for py installation
-    mkdir -p "$PY_BASE_DIR/lib"
-    mkdir -p "$PY_BASE_DIR/downloads"
+    mkdir -p "$SRPT_BASE_DIR/lib"
+    mkdir -p "$SRPT_BASE_DIR/downloads"
     
     # Download py source from GitHub
-    local py_url="https://github.com/thie1210/py/archive/refs/tags/v$PY_VERSION.tar.gz"
-    local download_file="$PY_BASE_DIR/downloads/py.tar.gz"
+    local py_url="https://github.com/thie1210/srpt/archive/refs/tags/v$SRPT_VERSION.tar.gz"
+    local download_file="$SRPT_BASE_DIR/downloads/py.tar.gz"
     
-    echo "  Downloading py $PY_VERSION..."
+    echo "  Downloading py $SRPT_VERSION..."
     if ! download "$py_url" "$download_file"; then
         err "Failed to download py. Please check your internet connection."
     fi
     
     echo "  Extracting..."
-    tar -xzf "$download_file" -C "$PY_BASE_DIR/downloads" || err "Failed to extract py"
+    tar -xzf "$download_file" -C "$SRPT_BASE_DIR/downloads" || err "Failed to extract py"
     rm -f "$download_file"
     
     # Move to final location
-    local extracted_dir="$PY_BASE_DIR/downloads/py-$PY_VERSION"
+    local extracted_dir="$SRPT_BASE_DIR/downloads/py-$SRPT_VERSION"
     if [ -d "$extracted_dir" ]; then
         # Remove old installation if exists
-        if [ -d "$PY_BASE_DIR/lib/py" ]; then
-            rm -rf "$PY_BASE_DIR/lib/py"
+        if [ -d "$SRPT_BASE_DIR/lib/py" ]; then
+            rm -rf "$SRPT_BASE_DIR/lib/py"
         fi
-        mv "$extracted_dir" "$PY_BASE_DIR/lib/py"
-        echo "  ✓ py installed to $PY_BASE_DIR/lib/py"
+        mv "$extracted_dir" "$SRPT_BASE_DIR/lib/py"
+        echo "  ✓ srpt installed to $SRPT_BASE_DIR/lib/py"
     else
         err "Failed to find extracted py source"
     fi
@@ -154,54 +154,54 @@ install_py() {
     echo "  ✓ Dependencies installed"
     
     # Create launcher script
-    local launcher="$PY_BIN_DIR/py"
-    mkdir -p "$PY_BIN_DIR"
+    local launcher="$SRPT_BIN_DIR/srpt"
+    mkdir -p "$SRPT_BIN_DIR"
     
     cat > "$launcher" << 'EOF'
 #!/bin/bash
-# Py launcher script
-# This script runs py using the managed Python installation
+# srpt launcher script
+# This script runs srpt using the managed Python installation
 
 set -e
 
-PY_BASE_DIR="${PY_BASE_DIR:-$HOME/.local/share/py}"
+SRPT_BASE_DIR="${SRPT_BASE_DIR:-$HOME/.local/share/srpt}"
 PYTHON_VERSION="3.13.12"
 PYTHON_BUILD_STANDALONE_TAG="20260211"
-PYTHON_BIN="$PY_BASE_DIR/python/$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG/python/bin/python3"
-PY_LIB="$PY_BASE_DIR/lib/py"
+PYTHON_BIN="$SRPT_BASE_DIR/python/$PYTHON_VERSION-$PYTHON_BUILD_STANDALONE_TAG/python/bin/python3"
+SRPT_LIB="$SRPT_BASE_DIR/lib/srpt"
 
 if [ ! -f "$PYTHON_BIN" ]; then
     echo "Error: Managed Python not found at $PYTHON_BIN"
-    echo "Please run the installer: curl -sSL https://raw.githubusercontent.com/thie1210/py/v$PY_VERSION/install.sh | sh"
+    echo "Please run the installer: curl -sSL https://raw.githubusercontent.com/thie1210/srpt/v$SRPT_VERSION/install.sh | sh"
     exit 1
 fi
 
-if [ ! -d "$PY_LIB" ]; then
-    echo "Error: py not installed at $PY_LIB"
-    echo "Please run the installer: curl -sSL https://raw.githubusercontent.com/thie1210/py/v$PY_VERSION/install.sh | sh"
+if [ ! -d "$SRPT_LIB" ]; then
+    echo "Error: srpt not installed at $SRPT_LIB"
+    echo "Please run the installer: curl -sSL https://raw.githubusercontent.com/thie1210/srpt/v$SRPT_VERSION/install.sh | sh"
     exit 1
 fi
 
-export PYTHONPATH="$PY_LIB/src"
-exec "$PYTHON_BIN" "$PY_LIB/src/py/__main__.py" "$@"
+export PYTHONPATH="$SRPT_LIB/src"
+exec "$PYTHON_BIN" "$SRPT_LIB/src/srpt/__main__.py" "$@"
 EOF
     
     chmod +x "$launcher"
-    echo "  ✓ py launcher created at $launcher"
+    echo "  ✓ srpt launcher created at $launcher"
 }
 
 # Finalize installation
 finalize() {
     echo ""
     echo "INSTALLATION"
-    echo "  ✓ py installed to $PY_BIN_DIR/py"
+    echo "  ✓ srpt installed to $SRPT_BIN_DIR/srpt"
     echo ""
     
     # Check if py is in PATH
     if ! command -v py > /dev/null 2>&1; then
         echo "PATH"
         echo "  ⚠ py not in PATH"
-        echo "  → Add to PATH: export PATH=\"$PY_BIN_DIR:\$PATH\""
+        echo "  → Add to PATH: export PATH=\"$SRPT_BIN_DIR:\$PATH\""
         echo "  → Add to shell profile (~/.bashrc, ~/.zshrc) for permanence"
         echo ""
     else

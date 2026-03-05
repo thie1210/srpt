@@ -1,14 +1,14 @@
-# `py status` Command - Implementation Complete
+# `srpt status` Command - Implementation Complete
 
 ## Overview
 
-Implemented comprehensive `py status` command that serves as a dashboard + help hybrid to ease onboarding and understand the difference between local .venv and project dependencies.
+Implemented comprehensive `srpt status` command that serves as a dashboard + help hybrid to ease onboarding and understand the difference between local .venv and project dependencies.
 
 ## Command Options
 
 ```bash
-py status              # Main dashboard
-py status --cache      # Include cache statistics
+srpt status              # Main dashboard
+srpt status --cache      # Include cache statistics
 ```
 
 ## What It Shows
@@ -21,11 +21,11 @@ py status --cache      # Include cache statistics
 ### 2. PYTHON Section
 - Currently used Python version
 - Number of installed Python versions
-- Promotes `py fetch` and `py versions` commands
+- Promotes `srpt fetch` and `srpt versions` commands
 
 ### 3. PACKAGES Section
 - Count of installed packages in .venv
-- Promotes `py list` command
+- Promotes `srpt list` command
 
 ### 4. DEPENDENCIES Section
 **Two modes:**
@@ -37,11 +37,11 @@ DEPENDENCIES
   Installed: 42 in .venv
 
   To TRACK dependencies for your project:
-    → Run 'py init' to create pyproject.toml (coming soon)
-    → Then use 'py add <pkg>' to track packages
+    → Run 'srpt init' to create pyproject.toml (coming soon)
+    → Then use 'srpt add <pkg>' to track packages
 
   Or continue manually:
-    → Run 'py install <pkg>' (not tracked)
+    → Run 'srpt install <pkg>' (not tracked)
 ```
 
 **Tracked Mode (has pyproject.toml):**
@@ -54,14 +54,14 @@ DEPENDENCIES
     Extra: anyio, certifi, h11, h2, ...
 
   TRACKING workflow (recommended):
-    → Run 'py remove anyio' to stop tracking
+    → Run 'srpt remove anyio' to stop tracking
 
   MANUAL workflow (advanced):
-    → Run 'py install <pkg>' (not tracked)
-    → Run 'py uninstall <pkg>' (from .venv only)
+    → Run 'srpt install <pkg>' (not tracked)
+    → Run 'srpt uninstall <pkg>' (from .venv only)
 
   Or sync automatically:
-    → Run 'py sync' to synchronize
+    → Run 'srpt sync' to synchronize
 ```
 
 ### 5. CACHES Section (with --cache flag)
@@ -110,9 +110,9 @@ Shows users whether they're in:
 
 ### 2. Context-Aware Help
 Promotes relevant commands based on current state:
-- If no .venv: suggests `py install`
-- If no pyproject.toml: suggests `py init`
-- If out of sync: suggests `py sync` or individual commands
+- If no .venv: suggests `srpt install`
+- If no pyproject.toml: suggests `srpt init`
+- If out of sync: suggests `srpt sync` or individual commands
 
 ### 3. Out-of-Sync Explanation
 When dependencies are out of sync, shows:
@@ -128,9 +128,9 @@ Clearly presents two workflows:
 Always shows relevant commands at the bottom:
 ```bash
 QUICK REFERENCE
-  py install <pkg>      Install package manually
-  py fetch <version>    Install Python version
-  py --help             Show all commands
+  srpt install <pkg>      Install package manually
+  srpt fetch <version>    Install Python version
+  srpt --help             Show all commands
 ```
 
 ## Testing Results
@@ -140,7 +140,7 @@ QUICK REFERENCE
 PROJECT
   ℹ No pyproject.toml (manual package management)
   ✗ No .venv found
-  → Run 'py install <pkg>' to create one
+  → Run 'srpt install <pkg>' to create one
 ```
 
 **Test 2: With pyproject.toml and .venv**
@@ -186,25 +186,25 @@ CACHES
 
 ```bash
 # Check overall status
-py status
+srpt status
 
 # Check with cache details
-py status --cache
+srpt status --cache
 
 # Typical workflow
-py status              # See you're in manual mode
-py init                # Create pyproject.toml (coming)
-py add requests        # Track + install
-py status              # See synchronized status
+srpt status              # See you're in manual mode
+srpt init                # Create pyproject.toml (coming)
+srpt add requests        # Track + install
+srpt status              # See synchronized status
 ```
 
 ## Future Enhancements
 
-- `py status --json` for tooling integration
-- `py status --short` for minimal output
+- `srpt status --json` for tooling integration
+- `srpt status --short` for minimal output
 - Show package sizes in .venv
 - Show outdated packages
-- Integration with `py sync` command
+- Integration with `srpt sync` command
 
 ## Status
 

@@ -13,7 +13,7 @@ Welcome to the Py documentation! This directory contains detailed guides and ref
 ### Python Version Management
 
 - **[PYTHON_VERSION_MANAGEMENT.md](PYTHON_VERSION_MANAGEMENT.md)** - Complete guide to installing and managing Python versions
-  - Installing Python versions with `py fetch`
+  - Installing Python versions with `srpt fetch`
   - Listing available and installed versions
   - Using `--with-version` flag
   
@@ -49,11 +49,11 @@ These documents track the development journey:
 ### Common Commands
 
 ```bash
-py status              # Show project dashboard
-py install <pkg>       # Install packages
-py fetch 3.14          # Install Python 3.14
-py versions            # List Python versions
-py list                # List installed packages
+srpt status              # Show project dashboard
+srpt install <pkg>       # Install packages
+srpt fetch 3.14          # Install Python 3.14
+srpt versions            # List Python versions
+srpt list                # List installed packages
 ```
 
 ### Key Concepts
@@ -68,14 +68,14 @@ py list                # List installed packages
 ```
 py/
 ├── src/py/
-│   ├── fetcher.py          # Python version management
-│   ├── parallel_resolver.py # Parallel resolution
-│   ├── pypi.py             # PyPI client
-│   ├── downloader.py       # Wheel downloader
-│   ├── installer_utils.py  # Wheel installer
-│   ├── cache.py            # Resolution cache
-│   ├── metadata_cache.py   # Learning system
-│   └── status.py           # Status dashboard
+│   ├── fetcher.srpt          # Python version management
+│   ├── parallel_resolver.srpt # Parallel resolution
+│   ├── pypi.srpt             # PyPI client
+│   ├── downloader.srpt       # Wheel downloader
+│   ├── installer_utils.srpt  # Wheel installer
+│   ├── cache.srpt            # Resolution cache
+│   ├── metadata_cache.srpt   # Learning system
+│   └── status.srpt           # Status dashboard
 ├── docs/
 ├── tests/
 └── .github/

@@ -97,7 +97,7 @@ def main():
 
 def run_repl(with_version: Optional[str] = None):
     """Run the Python REPL with the latest stable version."""
-    from py.fetcher import get_python_binary
+    from srpt.fetcher import get_python_binary
 
     print("Py: Checking for latest stable Python…")
     binary_path = get_python_binary(with_version)
@@ -127,7 +127,7 @@ def run_repl(with_version: Optional[str] = None):
 
 def run_script(script_path, args, with_version: Optional[str] = None):
     """Run a Python script with the latest stable version."""
-    from py.fetcher import get_python_binary
+    from srpt.fetcher import get_python_binary
 
     script_path = Path(script_path)
     if not script_path.exists():
@@ -169,8 +169,8 @@ def install_packages(packages, with_version: Optional[str] = None):
         print(f"Py: Python version management will be integrated in a future update")
 
     import asyncio
-    from py.install_workflow import install_command
-    from py.pypi import PackageNotFoundError
+    from srpt.install_workflow import install_command
+    from srpt.pypi import PackageNotFoundError
 
     print(f"Py: Installing packages: {packages}")
     try:
@@ -190,7 +190,7 @@ def uninstall_packages(packages):
         print("Error: No packages provided")
         sys.exit(1)
 
-    from py.uninstall import uninstall_command
+    from srpt.uninstall import uninstall_command
     import os
 
     venv_dir = Path(".venv")
@@ -215,7 +215,7 @@ def uninstall_packages(packages):
 
 def list_packages():
     """List installed packages."""
-    from py.uninstall import list_command
+    from srpt.uninstall import list_command
     import os
 
     venv_dir = Path(".venv")
@@ -252,7 +252,7 @@ def add_packages(packages):
 
 def fetch_python(args: List[str]):
     """Download and install Python versions."""
-    from py.fetcher import fetch_command
+    from srpt.fetcher import fetch_command
 
     list_available = "--available" in args or "-a" in args
     version = None
@@ -267,14 +267,14 @@ def fetch_python(args: List[str]):
 
 def list_versions():
     """List installed Python versions."""
-    from py.fetcher import versions_command
+    from srpt.fetcher import versions_command
 
     versions_command()
 
 
 def show_status(show_cache: bool = False):
     """Show project and environment status."""
-    from py.status import status_command
+    from srpt.status import status_command
 
     status_command(show_cache)
 
@@ -301,7 +301,7 @@ def update_command(args: List[str]):
     packages = [arg for arg in args if not arg.startswith("--") and arg != target_version]
 
     # Import and run update
-    from py.update import update
+    from srpt.update import update
 
     asyncio.run(
         update(
@@ -337,7 +337,7 @@ def audit_command(args: List[str]):
             break
 
     # Import and run audit
-    from py.audit import run_audit
+    from srpt.audit import run_audit
 
     asyncio.run(
         run_audit(
@@ -360,7 +360,7 @@ def health_command(args: List[str]):
     fix = "--fix" in args
 
     # Import and run health check
-    from py.health import health_check, format_health_report
+    from srpt.health import health_check, format_health_report
 
     health = asyncio.run(health_check(project_root=Path.cwd(), full=full))
 

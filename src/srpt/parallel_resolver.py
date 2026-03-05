@@ -11,10 +11,10 @@ import urllib.request
 from typing import List, Set, Dict, Any, Tuple
 from packaging.requirements import Requirement as PackagingRequirement
 from packaging.version import parse as parse_version
-from py.pypi import PyPIClient
-from py.metadata_cache import MetadataCache
-from py.resolver import Resolver as ResolvelibResolver, Candidate, Requirement
-from py.resolver import PyPIProvider, SimpleReporter
+from srpt.pypi import PyPIClient
+from srpt.metadata_cache import MetadataCache
+from srpt.resolver import Resolver as ResolvelibResolver, Candidate, Requirement
+from srpt.resolver import PyPIProvider, SimpleReporter
 
 
 async def fetch_version_metadata_batch(
@@ -121,7 +121,7 @@ async def parallel_resolve(requirements_list: List[str]) -> List[Candidate]:
     4. Run resolution using cached data
     5. Record newly discovered dependencies for future use
     """
-    from py.cache import ResolutionCache
+    from srpt.cache import ResolutionCache
 
     # Check resolution cache first
     cache = ResolutionCache()

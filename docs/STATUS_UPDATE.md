@@ -59,8 +59,8 @@
 - [ ] Benchmark against uv for installation phase specifically
 
 **Priority 2:**
-- [ ] `py add` command - Add packages to pyproject.toml
-- [ ] `py init` command - Create new project
+- [ ] `srpt add` command - Add packages to pyproject.toml
+- [ ] `srpt init` command - Create new project
 - [ ] Windows testing
 
 ## Technical Notes
@@ -101,13 +101,13 @@ for dist_info in site_packages.glob("*.dist-info"):
 
 **Estimated gap:**
 - uv fresh install: ~3-4s
-- py fresh install: ~14s
+- srpt fresh install: ~14s
 - Current gap: ~3-4x slower
 
 **But:**
 - uv is written in Rust (compiled, zero-cost abstractions)
-- py is pure Python (interpreted, higher-level)
-- py focuses on maintainability and community contribution
+- srpt is pure Python (interpreted, higher-level)
+- srpt focuses on maintainability and community contribution
 
 **Strengths:**
 - Learning system provides massive speedup on repeated installs

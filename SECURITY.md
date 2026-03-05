@@ -55,7 +55,7 @@ Security updates will be released:
 
 ### For Users
 
-1. **Keep py updated**: Always use the latest version
+1. **Keep srpt updated**: Always use the latest version
 2. **Verify package sources**: Only install packages from trusted sources
 3. **Check hashes**: Py verifies SHA256 hashes when available
 4. **Review dependencies**: Periodically audit your dependencies
@@ -78,9 +78,9 @@ Py downloads packages from PyPI (pypi.org) over HTTPS.
 ### Code Execution
 
 Py executes code in the following scenarios:
-- Running user scripts: `py script.py`
-- Running installed console scripts: `py run django-admin`
-- Package setup.py execution (during installation)
+- Running user scripts: `srpt script.py`
+- Running installed console scripts: `srpt run django-admin`
+- Package setup.srpt execution (during installation)
 
 **Mitigation**: Only install packages from trusted sources.
 

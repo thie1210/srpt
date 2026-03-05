@@ -2,15 +2,15 @@
 
 ## Overview
 
-Added Python version management with `py fetch` and `py versions` commands, plus `--with-version` flag to specify which Python version to use.
+Added Python version management with `srpt fetch` and `srpt versions` commands, plus `--with-version` flag to specify which Python version to use.
 
 ## New Commands
 
 ### 1. List Available Python Versions
 
 ```bash
-py fetch --available
-py fetch -a
+srpt fetch --available
+srpt fetch -a
 ```
 
 **Output:**
@@ -28,9 +28,9 @@ Py: Available Python versions:
 
 ```bash
 # Install specific version
-py fetch 3.14        # Installs 3.14.3 (resolves automatically)
-py fetch 3.14.3      # Installs exact version
-py fetch 3.13        # Installs 3.13.12
+srpt fetch 3.14        # Installs 3.14.3 (resolves automatically)
+srpt fetch 3.14.3      # Installs exact version
+srpt fetch 3.13        # Installs 3.13.12
 ```
 
 **Output:**
@@ -47,7 +47,7 @@ Py: Python binary at: /Users/you/.local/share/py/python/3.14.3-20260211/python/b
 ### 3. List Installed Versions
 
 ```bash
-py versions
+srpt versions
 ```
 
 **Output:**
@@ -61,28 +61,28 @@ Py: 2 Python version(s) installed:
 
 ```bash
 # Run Python REPL with specific version
-py --with-version 3.13
+srpt --with-version 3.13
 
 # Run script with specific version
-py --with-version 3.13 my_script.py
-py --with-version 3.14.3 my_script.py
+srpt --with-version 3.13 my_script.py
+srpt --with-version 3.14.3 my_script.py
 
 # Default behavior (uses latest installed)
 py
-py my_script.py
+srpt my_script.py
 ```
 
 **Output Examples:**
 ```bash
-$ py --with-version 3.13 script.py
+$ srpt --with-version 3.13 script.py
 Py: Using Python 3.13.12 (matched 3.13)
 # Runs with Python 3.13
 
-$ py --with-version 3.14 script.py  
+$ srpt --with-version 3.14 script.srpt  
 Py: Using Python 3.14.3 (matched 3.14)
 # Runs with Python 3.14
 
-$ py script.py
+$ srpt script.py
 Py: Using Python 3.14.3
 # Uses latest installed version (3.14.3)
 ```
@@ -96,8 +96,8 @@ Py: Using Python 3.14.3
 - `get_installed_python_versions()` - Lists installed versions
 - `download_python_version()` - Downloads and extracts specific version
 - `get_python_binary(version)` - Gets binary path, downloads if needed
-- `fetch_command()` - CLI handler for `py fetch`
-- `versions_command()` - CLI handler for `py versions`
+- `fetch_command()` - CLI handler for `srpt fetch`
+- `versions_command()` - CLI handler for `srpt versions`
 
 **Updated:** `src/py/__main__.py`
 - Added `--with-version` flag to parser
@@ -159,38 +159,38 @@ From python-build-standalone release 20260211:
 ### Quick Start
 ```bash
 # Install Python 3.14
-py fetch 3.14
+srpt fetch 3.14
 
 # Check installed
-py versions
+srpt versions
 
 # Use it
-py --with-version 3.14
+srpt --with-version 3.14
 ```
 
 ### Development Workflow
 ```bash
 # Install multiple versions for testing
-py fetch 3.13
-py fetch 3.14
+srpt fetch 3.13
+srpt fetch 3.14
 
 # Test script on Python 3.13
-py --with-version 3.13 test_script.py
+srpt --with-version 3.13 test_script.py
 
 # Test script on Python 3.14
-py --with-version 3.14 test_script.py
+srpt --with-version 3.14 test_script.py
 ```
 
 ### CI/CD Integration
 ```bash
 # List available versions (for matrix testing)
-py fetch --available
+srpt fetch --available
 
 # Install specific version
-py fetch 3.14.3
+srpt fetch 3.14.3
 
 # Verify installation
-py versions
+srpt versions
 ```
 
 ## Technical Implementation
@@ -211,18 +211,18 @@ py versions
 
 ### Compatibility
 
-- Works with existing `py install` workflow
+- Works with existing `srpt install` workflow
 - Python version used for running scripts
 - Virtual environments use system Python
 - Future: integrate Python version into venv creation
 
 ## Future Enhancements
 
-- [ ] `py use <version>` - Set default Python for project
+- [ ] `srpt use <version>` - Set default Python for project
 - [ ] `.python-version` file support
-- [ ] `py venv --with-version 3.14` - Create venv with specific Python
+- [ ] `srpt venv --with-version 3.14` - Create venv with specific Python
 - [ ] Auto-install Python version if not found
-- [ ] Integration with `py install` to use specific Python
+- [ ] Integration with `srpt install` to use specific Python
 
 ## Testing
 

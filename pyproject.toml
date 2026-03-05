@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "py"
-version = "0.1.6"
+name = "srpt"
+version = "0.1.0"
 description = "A performance profiled package manager"
 readme = "README.md"
 requires-python = ">=3.9"

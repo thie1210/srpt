@@ -7,7 +7,7 @@ from packaging.version import Version, parse as parse_version
 from packaging.requirements import Requirement as PackagingRequirement
 from packaging.utils import canonicalize_name
 from resolvelib import Resolver, BaseReporter, AbstractProvider
-from py.pypi import PyPIClient
+from srpt.pypi import PyPIClient
 
 
 class Candidate:
@@ -185,7 +185,7 @@ class PyPIProvider(AbstractProvider):
 
 
 async def resolve(requirements_list: List[str]) -> List[Candidate]:
-    from py.cache import ResolutionCache
+    from srpt.cache import ResolutionCache
 
     # Check cache first
     cache = ResolutionCache()

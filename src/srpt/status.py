@@ -61,7 +61,7 @@ def get_project_status() -> Dict:
 
 def get_python_status() -> Dict:
     """Get Python environment status."""
-    from py.fetcher import get_installed_python_versions
+    from srpt.fetcher import get_installed_python_versions
 
     installed = get_installed_python_versions()
 
@@ -103,7 +103,7 @@ def get_package_status() -> Dict:
 
     site_packages = potential_libs[0]
 
-    from py.installed import list_installed_packages
+    from srpt.installed import list_installed_packages
 
     packages = list_installed_packages(site_packages)
 
@@ -196,8 +196,8 @@ def get_dependency_sync_status() -> Dict:
 
 def get_cache_stats() -> Dict:
     """Get statistics from both cache databases."""
-    from py.cache import ResolutionCache
-    from py.metadata_cache import MetadataCache
+    from srpt.cache import ResolutionCache
+    from srpt.metadata_cache import MetadataCache
 
     resolution_cache = ResolutionCache()
     metadata_cache = MetadataCache()
@@ -217,7 +217,7 @@ def get_cache_stats() -> Dict:
 def get_health_summary() -> Dict:
     """Get quick health summary for status command."""
     import asyncio
-    from py.health import health_check
+    from srpt.health import health_check
 
     try:
         # Run health check synchronously

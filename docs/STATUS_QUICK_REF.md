@@ -1,10 +1,10 @@
-# `py status` Command - Quick Reference
+# `srpt status` Command - Quick Reference
 
 ## Usage
 
 ```bash
-py status              # Dashboard overview
-py status --cache      # Include cache statistics
+srpt status              # Dashboard overview
+srpt status --cache      # Include cache statistics
 ```
 
 ## What You'll See
@@ -17,16 +17,16 @@ When you're just experimenting without `pyproject.toml`:
 PROJECT
   ℹ No pyproject.toml (manual package management)
   ✗ No .venv found
-  → Run 'py install <pkg>' to create one
+  → Run 'srpt install <pkg>' to create one
 
 DEPENDENCIES
   Mode: Manual (no pyproject.toml)
   
   → TRACK workflow (for projects):
-    py add <pkg>  (coming soon)
+    srpt add <pkg>  (coming soon)
   
   → MANUALLY manage (for experiments):
-    py install <pkg>
+    srpt install <pkg>
 ```
 
 ### Scenario 2: Managed Project (Tracked Mode)
@@ -59,15 +59,15 @@ DEPENDENCIES
     Extra: requests (installed but not tracked)
   
   TRACKING workflow (recommended):
-    → Run 'py install pandas' to install tracked package
-    → Run 'py remove requests' to stop tracking
+    → Run 'srpt install pandas' to install tracked package
+    → Run 'srpt remove requests' to stop tracking
   
   MANUAL workflow (advanced):
-    → Run 'py install <pkg>' (not tracked)
-    → Run 'py uninstall <pkg>' (from .venv only)
+    → Run 'srpt install <pkg>' (not tracked)
+    → Run 'srpt uninstall <pkg>' (from .venv only)
   
   Or sync automatically:
-    → Run 'py sync'
+    → Run 'srpt sync'
 ```
 
 ## Understanding the Difference
@@ -78,46 +78,46 @@ DEPENDENCIES
 - All packages currently installed
 - Only exists on your machine
 - Found in `.venv/lib/python*/site-packages`
-- Use `py list` to see all
+- Use `srpt list` to see all
 
 **Project Dependencies** (tracked):
 - Listed in `pyproject.toml`
 - Shared with team members
 - Reproducible across machines
-- Use `py add`, `py remove`, `py sync`
+- Use `srpt add`, `srpt remove`, `srpt sync`
 
 ### Example Workflow
 
 ```bash
 # 1. Check current status
-py status
+srpt status
 
 # 2. Start new project
 mkdir myapp && cd myapp
 
 # 3. Check status (no .venv, manual mode)
-py status
+srpt status
 
 # 4. Install first package
-py install requests
+srpt install requests
 
 # 5. Check status again (has .venv)
-py status
+srpt status
 
 # 6. Initialize project (creates pyproject.toml)
-py init
+srpt init
 
 # 7. Track dependencies
-py add flask django
+srpt add flask django
 
 # 8. Check status (now in tracked mode)
-py status
+srpt status
 ```
 
 ## Cache Information
 
 ```bash
-py status --cache
+srpt status --cache
 ```
 
 Shows:
@@ -148,17 +148,17 @@ At the bottom, relevant commands for your current mode:
 
 **Manual mode:**
 ```
-py install <pkg>      
-py list               
-py fetch <version>    
+srpt install <pkg>      
+srpt list               
+srpt fetch <version>    
 ```
 
 **Tracked mode:**
 ```
-py add <pkg>          
-py remove <pkg>       
-py install            
-py sync               
+srpt add <pkg>          
+srpt remove <pkg>       
+srpt install            
+srpt sync               
 ```
 
 ## Benefits

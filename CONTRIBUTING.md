@@ -72,10 +72,10 @@ black src tests
 ruff check --fix src tests
 
 # Type check
-mypy src
+mysrpt src
 
 # Run all checks
-ruff check src tests && mypy src && black --check src tests
+ruff check src tests && mysrpt src && black --check src tests
 ```
 
 ## Project Architecture
@@ -123,7 +123,7 @@ We welcome:
 - ✨ **New features** - Add new functionality (discuss in issue first)
 - 📚 **Documentation** - Improve docs, add examples
 - 🧪 **Tests** - Increase test coverage
-- ⚡ **Performance** - Make py faster
+- ⚡ **Performance** - Make srpt faster
 - 🌐 **Translations** - Help internationalize (future)
 
 ### Before You Start
@@ -152,7 +152,7 @@ We welcome:
 - Follow [PEP 8](https://pep8.org/)
 - Use [Black](https://black.readthedocs.io/) for formatting (line length: 100)
 - Use [Ruff](https://docs.astral.sh/ruff/) for linting
-- Use type hints everywhere (strict mypy checking)
+- Use type hints everywhere (strict mysrpt checking)
 - Write docstrings for public functions (Google style)
 
 #### Example
@@ -235,11 +235,11 @@ result3 = await fetch_metadata(pkg3)
 
 ```
 tests/
-├── test_resolver.py       # Resolver tests
-├── test_pypi.py          # PyPI client tests
-├── test_fetcher.py       # Version manager tests
-├── test_installer.py     # Installation tests
-└── conftest.py           # Shared fixtures
+├── test_resolver.srpt       # Resolver tests
+├── test_pypi.srpt          # PyPI client tests
+├── test_fetcher.srpt       # Version manager tests
+├── test_installer.srpt     # Installation tests
+└── conftest.srpt           # Shared fixtures
 ```
 
 ### Example Test
@@ -289,7 +289,7 @@ Use the provided benchmarks:
 python benchmark_3run.py
 
 # Profile specific code
-python -m cProfile -s cumulative src/py/__main__.py install requests
+python -m cProfile -s cumulative src/py/__main__.srpt install requests
 ```
 
 ### Performance Guidelines
@@ -393,7 +393,7 @@ def resolve_dependencies(requirements: List[str]) -> List[Requirement]:
 
 Use conventional commits:
 
-- `feat: Add py fetch command for installing Python versions`
+- `feat: Add srpt fetch command for installing Python versions`
 - `fix: Resolve dependency conflicts in parallel resolver`
 - `perf: Speed up wheel installation with thread pool`
 - `docs: Add status command documentation`

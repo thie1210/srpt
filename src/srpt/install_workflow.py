@@ -1,14 +1,14 @@
 import asyncio
 from pathlib import Path
 from typing import List
-from py.downloader import Downloader
-from py.pypi import PyPIClient
-from py.resolver import resolve
+from srpt.downloader import Downloader
+from srpt.pypi import PyPIClient
+from srpt.resolver import resolve
 
 
 async def install_command(packages: List[str]):
     """Installs a list of packages."""
-    from py.installed import is_installed, get_installed_version
+    from srpt.installed import is_installed, get_installed_version
 
     # 0. Determine site-packages location
     import os
@@ -44,7 +44,7 @@ async def install_command(packages: List[str]):
     # 1. Resolve dependencies
     # Try parallel resolver first, fall back to sequential
     try:
-        from py.parallel_resolver import parallel_resolve
+        from srpt.parallel_resolver import parallel_resolve
 
         candidates = await parallel_resolve(packages_to_install)
     except Exception as e:
@@ -127,7 +127,7 @@ async def install_command(packages: List[str]):
     else:
         venv_python = venv_dir / "Scripts" / "python.exe"
 
-    from py.installer_utils import install_wheels_parallel
+    from srpt.installer_utils import install_wheels_parallel
 
     results = await install_wheels_parallel(wheel_paths, target_dir, venv_python)
 

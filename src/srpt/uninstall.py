@@ -5,7 +5,7 @@ Uninstall command implementation.
 import shutil
 from pathlib import Path
 from typing import List
-from py.installed import (
+from srpt.installed import (
     find_dist_info,
     parse_record_file,
     list_installed_packages,

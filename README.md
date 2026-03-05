@@ -23,13 +23,13 @@ Bootstraps Python, just run:
 
 **macOS/Linux:**
 ```bash
-curl -sSL https://raw.githubusercontent.com/thie1210/py/v0.1.6/install.sh | sh
+curl -sSL https://raw.githubusercontent.com/thie1210/srpt/v0.1.6/install.sh | sh
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
 **Windows (PowerShell):**
 ```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/thie1210/py/v0.1.6/install.ps1 -OutFile install.ps1
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/thie1210/srpt/v0.1.6/install.ps1 -OutFile install.ps1
 .\install.ps1
 $env:PATH += ";$env:USERPROFILE\.local\bin"
 ```
@@ -41,20 +41,20 @@ $env:PATH += ";$env:USERPROFILE\.local\bin"
 py
 
 # Check project status
-py status
+srpt status
 
 # Install packages
-py install requests fastapi
+srpt install requests fastapi
 
 # List installed packages
-py list
+srpt list
 
 # Install and use specific Python version
-py fetch 3.14
-py --with-version 3.14 my_script.py
+srpt fetch 3.14
+srpt --with-version 3.14 my_script.py
 
 # See all Python versions
-py versions
+srpt versions
 ```
 
 **What's a project?** Just a folder with a `.venv` and `pyproject.toml`. That's it. Transform any folder into a project by running `py init` or `py install <package>`. No ceremony, no complex setup.
@@ -67,13 +67,13 @@ A project is just a folder with a `.venv` and `pyproject.toml`. Transform any fo
 
 ```bash
 # Initialize a new project (creates pyproject.toml + .venv)
-py init
+srpt init
 
 # Or just start installing packages (creates .venv automatically)
-py install requests
+srpt install requests
 
 # Dashboard showing project status, dependencies, and suggestions
-py status
+srpt status
 ```
 
 Output:
@@ -100,32 +100,32 @@ DEPENDENCIES
 
 ```bash
 # Install packages (fast!)
-py install requests flask
+srpt install requests flask
 
 # Uninstall packages
-py uninstall old-package
+srpt uninstall old-package
 
 # List installed packages
-py list
+srpt list
 ```
 
 ### 🐍 Python Version Management
 
 ```bash
 # Install Python 3.14
-py fetch 3.14
+srpt fetch 3.14
 
 # Install Python 3.13 (or any version)
-py fetch 3.13
+srpt fetch 3.13
 
 # List available versions
-py fetch --available
+srpt fetch --available
 
 # List installed versions
-py versions
+srpt versions
 
 # Use specific version
-py --with-version 3.14 script.py
+srpt --with-version 3.14 script.py
 ```
 
 ### ⚡ Performance

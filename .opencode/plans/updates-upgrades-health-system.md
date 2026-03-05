@@ -20,7 +20,7 @@
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | Safe-by-default | All commands dry-run, `--apply` to execute | Prevents accidents |
-| Self-update command | `py update --self` | Unified command surface, discoverable |
+| Self-update command | `srpt update --self` | Unified command surface, discoverable |
 | Backup location | Project root | Easy to find, easy to clean |
 | Backup naming | `.venv.backup.upgrade.YYYY-MM-DD.<info>` | Descriptive, sortable |
 | Backup retention | Keep, ask if > 7 days | User control |
@@ -30,15 +30,15 @@
 | `--try` behavior | Modify `.venv` with backup | Realistic testing |
 | Multiple upgrades | One at a time | Safer, easier debugging |
 | Revert without try | Error: "nothing to revert to" | Clear feedback |
-| Post-rebuild | Auto-run `py health` | Immediate feedback |
+| Post-rebuild | Auto-run `srpt health` | Immediate feedback |
 
 ---
 
 ## Command Reference
 
-### `py status` (Enhanced)
+### `srpt status` (Enhanced)
 ```
-$ py status
+$ srpt status
 
 PROJECT
   ✓ pyproject.toml (myproject)
@@ -52,7 +52,7 @@ PACKAGES
   Installed: 42
   ! Outdated: 2 (django, pillow)
   ! Security: 1 (django EOL April 2024)
-  → Run 'py health' for details
+  → Run 'srpt health' for details
 
 DEPENDENCIES
   Tracked: 5
@@ -61,15 +61,15 @@ DEPENDENCIES
 HEALTH
   ✓ Vulnerabilities: 0 found
   ! 2 warnings, 0 errors
-  → Run 'py health' for full report
+  → Run 'srpt health' for full report
 ```
 
-### `py health`
+### `srpt health`
 ```
-$ py health
+$ srpt health
 
 PY HEALTH CHECK
-  ✓ py version: 0.1.1 (latest: 0.1.1)
+  ✓ srpt version: 0.1.1 (latest: 0.1.1)
   ✓ Python: 3.11.9
   ✓ Cache: 247 MB
 
@@ -77,21 +77,21 @@ SECURITY
   ✓ Vulnerabilities: 0 found
   ✓ Last audit: 2 hours ago
   ! Django 3.2.18: Security support ends April 2024
-    → Run 'py upgrade django' for LTS version
+    → Run 'srpt upgrade django' for LTS version
 
 DEPENDENCIES
   ✓ requests 2.31.0 (latest)
   ✓ flask 3.0.0 (latest)
   ! django 3.2.18 (latest: 4.2.11)
   ! pillow 10.0.0 (latest: 10.2.0)
-  → Run 'py update' to update all
+  → Run 'srpt update' to update all
 
 COMPATIBILITY
   ✓ Python 3.11 → 3.12: 42/42 packages compatible
 
 SUMMARY
   2 warnings, 0 errors
-  → Run 'py health --full' for all 42 packages
+  → Run 'srpt health --full' for all 42 packages
 ```
 
 **Flags:**
@@ -99,9 +99,9 @@ SUMMARY
 - `--json` - JSON output for CI/CD
 - `--fix` - Auto-fix safe issues
 
-### `py update`
+### `srpt update`
 ```
-$ py update
+$ srpt update
 
 DRY RUN - No changes will be made
 
@@ -111,11 +111,11 @@ PACKAGES TO UPDATE:
   ✓ requests   2.31.0 → 2.31.1  (within >=2.28.0)
 
 3 packages can be updated
-Run 'py update --apply' to apply changes
+Run 'srpt update --apply' to apply changes
 ```
 
 ```
-$ py update --self
+$ srpt update --self
 
 DRY RUN - No changes will be made
 
@@ -124,42 +124,42 @@ PY UPDATE:
   Latest:  0.2.0
 
 CHANGES:
-  • New: py update command
-  • New: py health command
+  • New: srpt update command
+  • New: srpt health command
   • Fix: Parallel installation race condition
   • Security: Update httpx to 0.27.2
 
-Run 'py update --self --apply' to update
+Run 'srpt update --self --apply' to update
 ```
 
 **Flags:**
 - `--apply` - Execute the update
-- `--self` - Update py itself
+- `--self` - Update srpt itself
 - `--all` - Update all packages (ignore constraints)
 - `--security` - Only security updates
 - `--check` - Just check for updates (with `--self`)
 - `--version <ver>` - Update to specific version (with `--self`)
 
-### `py upgrade`
+### `srpt upgrade`
 ```
-$ py upgrade
+$ srpt upgrade
 
 AVAILABLE UPGRADES:
   django
     Current: 3.2.18
     Next major: 4.2.11 (LTS until April 2026)
     Constraint: >=3.2,<4.0
-    → Run 'py upgrade --try django 4.2' to test
-    → Run 'py upgrade --apply django 4.2' to upgrade
+    → Run 'srpt upgrade --try django 4.2' to test
+    → Run 'srpt upgrade --apply django 4.2' to upgrade
   
   python
     Current: 3.11.9
     Next major: 3.12.3
-    → Run 'py rebuild --with-version 3.12' to upgrade
+    → Run 'srpt rebuild --with-version 3.12' to upgrade
 ```
 
 ```
-$ py upgrade --try django 4.2
+$ srpt upgrade --try django 4.2
 
 TESTING UPGRADE: django 3.2.18 → 4.2.11
 
@@ -184,8 +184,8 @@ HEALTH CHECK:
 
 STATUS:
   ✓ Upgrade tested successfully
-  → Run 'py upgrade --apply django 4.2' to keep changes
-  → Run 'py upgrade --revert' to undo
+  → Run 'srpt upgrade --apply django 4.2' to keep changes
+  → Run 'srpt upgrade --revert' to undo
 ```
 
 **Flags:**
@@ -193,9 +193,9 @@ STATUS:
 - `--revert` - Undo last `--try`
 - `--apply <package> <version>` - Permanent upgrade
 
-### `py rebuild`
+### `srpt rebuild`
 ```
-$ py rebuild --with-version 3.12
+$ srpt rebuild --with-version 3.12
 
 DRY RUN - No changes will be made
 
@@ -218,7 +218,7 @@ COMPATIBILITY CHECK:
 BACKUP:
   ✓ Will create: .venv.backup.upgrade.2024-03-04.python-3.12
 
-Run 'py rebuild --with-version 3.12 --apply' to proceed
+Run 'srpt rebuild --with-version 3.12 --apply' to proceed
 ```
 
 **Flags:**
@@ -227,9 +227,9 @@ Run 'py rebuild --with-version 3.12 --apply' to proceed
 - `--restore` - Restore from last backup
 - `--list-backups` - Show available backups
 
-### `py audit`
+### `srpt audit`
 ```
-$ py audit
+$ srpt audit
 
 SECURITY AUDIT
 
@@ -238,17 +238,17 @@ VULNERABILITIES:
     CVE-2023-32681: Information disclosure
     Severity: MEDIUM (6.5)
     Fixed in: 2.31.0
-    → Run 'py update requests --apply'
+    → Run 'srpt update requests --apply'
   
   ✗ pillow 9.5.0
     CVE-2023-44268: Arbitrary code execution
     Severity: HIGH (8.5)
     Fixed in: 10.0.0
-    → Run 'py update pillow --apply'
+    → Run 'srpt update pillow --apply'
 
 SUMMARY:
   2 vulnerabilities found (1 HIGH, 1 MEDIUM)
-  Run 'py audit --fix' to auto-fix all
+  Run 'srpt audit --fix' to auto-fix all
 ```
 
 **Flags:**
@@ -263,33 +263,33 @@ SUMMARY:
 ```
 src/py/
 ├── __init__.py
-├── __main__.py              # Updated command routing
-├── health.py                # Health diagnostics
-├── update.py                # Package updates + self-update routing
-├── self_update.py           # Self-update logic
-├── upgrade.py               # Major version upgrades
-├── rebuild.py               # Python version rebuild
-├── audit.py                 # Security audit (pip-audit wrapper)
-├── backup.py                # Backup management
-├── compatibility.py         # Python compatibility checks
-├── status.py                # Enhanced with health summary
-├── fetcher.py               # Existing
-├── parallel_resolver.py     # Existing
-├── pypi.py                  # Existing (add version fetching)
-├── downloader.py            # Existing
-├── installer_utils.py       # Existing
-├── install_workflow.py      # Existing
-├── cache.py                 # Existing
-├── metadata_cache.py        # Existing
-├── installed.py             # Existing
-├── resolver.py              # Existing
-├── uninstall.py             # Existing
+├── __main__.srpt              # Updated command routing
+├── health.srpt                # Health diagnostics
+├── update.srpt                # Package updates + self-update routing
+├── self_update.srpt           # Self-update logic
+├── upgrade.srpt               # Major version upgrades
+├── rebuild.srpt               # Python version rebuild
+├── audit.srpt                 # Security audit (pip-audit wrapper)
+├── backup.srpt                # Backup management
+├── compatibility.srpt         # Python compatibility checks
+├── status.srpt                # Enhanced with health summary
+├── fetcher.srpt               # Existing
+├── parallel_resolver.srpt     # Existing
+├── pypi.srpt                  # Existing (add version fetching)
+├── downloader.srpt            # Existing
+├── installer_utils.srpt       # Existing
+├── install_workflow.srpt      # Existing
+├── cache.srpt                 # Existing
+├── metadata_cache.srpt        # Existing
+├── installed.srpt             # Existing
+├── resolver.srpt              # Existing
+├── uninstall.srpt             # Existing
 └── utils/
     ├── __init__.py
-    ├── confirm.py           # --apply flag pattern
-    ├── constraints.py       # Version constraint parsing
-    ├── backup_manager.py   # Backup file management
-    └── pypi_client.py      # PyPI API helpers
+    ├── confirm.srpt           # --apply flag pattern
+    ├── constraints.srpt       # Version constraint parsing
+    ├── backup_manager.srpt   # Backup file management
+    └── pypi_client.srpt      # PyPI API helpers
 ```
 
 ---
@@ -366,7 +366,7 @@ async def get_package_info(package_name: str, version: str) -> dict
 
 **Day 3-4: Self-Update**
 
-Implement `py update --self`.
+Implement `srpt update --self`.
 
 **Files to create:**
 - `src/py/self_update.py`
@@ -388,7 +388,7 @@ async def self_update(
     target_version: str = None
 ):
     """
-    Update py to latest or specific version:
+    Update srpt to latest or specific version:
     1. Check current version
     2. Fetch latest from GitHub
     3. Download new version
@@ -413,7 +413,7 @@ async def self_update(
 
 **Day 6-7: Package Updates**
 
-Implement `py update` for packages.
+Implement `srpt update` for packages.
 
 **Files to create:**
 - `src/py/update.py`
@@ -443,7 +443,7 @@ async def update_packages(
 
 **Day 8-9: Security Audit**
 
-Implement `py audit` with pip-audit integration.
+Implement `srpt audit` with pip-audit integration.
 
 **Files to create:**
 - `src/py/audit.py`
@@ -465,7 +465,7 @@ async def run_audit(
 
 **Day 10-11: Enhanced Status & Health**
 
-Implement `py health` and enhance `py status`.
+Implement `srpt health` and enhance `srpt status`.
 
 **Files to create:**
 - `src/py/health.py`
@@ -483,7 +483,7 @@ async def health_check(
 ) -> dict:
     """
     Comprehensive health diagnostics:
-    - py version check
+    - srpt version check
     - Python version check
     - Security vulnerabilities
     - Outdated packages
@@ -523,7 +523,7 @@ def format_health_report(health: dict, full: bool = False):
 
 **Day 13-15: Upgrade Command**
 
-Implement `py upgrade` with try/revert/apply workflow.
+Implement `srpt upgrade` with try/revert/apply workflow.
 
 **Files to create:**
 - `src/py/upgrade.py`
@@ -574,7 +574,7 @@ class UpgradeManager:
 
 **Day 18-20: Rebuild Command**
 
-Implement `py rebuild` for Python version upgrades.
+Implement `srpt rebuild` for Python version upgrades.
 
 **Files to create:**
 - `src/py/rebuild.py`
@@ -658,13 +658,13 @@ Implement backup rotation and old backup prompts.
 
 **Day 25-26: Enhanced Security**
 
-- `py health --fix` for safe auto-fixes
+- `srpt health --fix` for safe auto-fixes
 - Security advisory integration
 - CVE database caching (optional)
 
 **Day 27-28: Compatibility Features**
 
-- Pre-flight checks for `py rebuild`
+- Pre-flight checks for `srpt rebuild`
 - Package compatibility matrix improvements
 - Platform-specific checks
 
@@ -705,7 +705,7 @@ def main():
     update_parser.add_argument("--apply", action="store_true",
                               help="Apply changes (default is dry-run)")
     update_parser.add_argument("--self", action="store_true", dest="update_self",
-                              help="Update py itself")
+                              help="Update srpt itself")
     update_parser.add_argument("--all", action="store_true",
                               help="Update all packages (ignore constraints)")
     update_parser.add_argument("--security", action="store_true",
@@ -745,7 +745,7 @@ def main():
     # Command routing
     if args.command == "update":
         if args.update_self:
-            # py update --self
+            # srpt update --self
             from .self_update import self_update
             asyncio.run(self_update(
                 dry_run=not args.apply,
@@ -753,7 +753,7 @@ def main():
                 target_version=args.version
             ))
         else:
-            # py update (packages)
+            # srpt update (packages)
             from .update import update_packages
             asyncio.run(update_packages(
                 project_root=Path.cwd(),
@@ -802,15 +802,15 @@ dependencies = [
 
 **`docs/UPDATES_AND_UPGRADES.md`**:
 - Philosophy: Safe by default
-- `py update` usage
-- `py update --self` usage
-- `py upgrade` workflow
-- `py rebuild` usage
+- `srpt update` usage
+- `srpt update --self` usage
+- `srpt upgrade` workflow
+- `srpt rebuild` usage
 - Backup management
 - Best practices
 
 **`docs/HEALTH_CHECK.md`**:
-- `py health` usage
+- `srpt health` usage
 - Understanding health report
 - Fixing common issues
 - CI/CD integration
@@ -851,24 +851,24 @@ dependencies = [
 
 ### Manual Testing Checklist
 
-- [ ] `py status` shows health summary
-- [ ] `py health` shows full diagnostics
-- [ ] `py health --full` shows all packages
-- [ ] `py health --json` outputs valid JSON
-- [ ] `py update` shows dry-run
-- [ ] `py update --apply` actually updates
-- [ ] `py update --all` ignores constraints
-- [ ] `py update --self` checks for py updates
-- [ ] `py update --self --apply` updates py
-- [ ] `py upgrade` shows available upgrades
-- [ ] `py upgrade --try` creates backup
-- [ ] `py upgrade --revert` restores backup
-- [ ] `py upgrade --apply` makes permanent
-- [ ] `py rebuild --with-version` shows dry-run
-- [ ] `py rebuild --apply` actually rebuilds
-- [ ] `py rebuild --restore` restores backup
-- [ ] `py audit` runs security scan
-- [ ] `py audit --fix` auto-fixes vulnerabilities
+- [ ] `srpt status` shows health summary
+- [ ] `srpt health` shows full diagnostics
+- [ ] `srpt health --full` shows all packages
+- [ ] `srpt health --json` outputs valid JSON
+- [ ] `srpt update` shows dry-run
+- [ ] `srpt update --apply` actually updates
+- [ ] `srpt update --all` ignores constraints
+- [ ] `srpt update --self` checks for srpt updates
+- [ ] `srpt update --self --apply` updates py
+- [ ] `srpt upgrade` shows available upgrades
+- [ ] `srpt upgrade --try` creates backup
+- [ ] `srpt upgrade --revert` restores backup
+- [ ] `srpt upgrade --apply` makes permanent
+- [ ] `srpt rebuild --with-version` shows dry-run
+- [ ] `srpt rebuild --apply` actually rebuilds
+- [ ] `srpt rebuild --restore` restores backup
+- [ ] `srpt audit` runs security scan
+- [ ] `srpt audit --fix` auto-fixes vulnerabilities
 - [ ] Backup naming follows pattern
 - [ ] Old backup prompt works
 - [ ] Compatibility check works
@@ -881,7 +881,7 @@ dependencies = [
 
 **Multiple backups exist:**
 ```
-$ py rebuild --with-version 3.12
+$ srpt rebuild --with-version 3.12
 
 ! Multiple backups found:
   1. .venv.backup.upgrade.2024-03-01.django-4.2 (3 days old)
@@ -892,7 +892,7 @@ Which backup to restore? [1/2/skip]:
 
 **Backup is > 7 days old:**
 ```
-$ py rebuild --with-version 3.12
+$ srpt rebuild --with-version 3.12
 
 ! Old backup found: .venv.backup.upgrade.2024-02-20.django-4.2 (12 days old)
 Keep it? [y/N]:
@@ -900,29 +900,29 @@ Keep it? [y/N]:
 
 **No backup to revert:**
 ```
-$ py upgrade --revert
+$ srpt upgrade --revert
 
 Error: Nothing to revert to
-No upgrade test in progress. Run 'py upgrade --try <package> <version>' first.
+No upgrade test in progress. Run 'srpt upgrade --try <package> <version>' first.
 ```
 
 ### Version Constraints
 
 **Pinned package:**
 ```
-$ py update django
+$ srpt update django
 
 DRY RUN - No changes will be made
 
 PACKAGES TO UPDATE:
   ! django 3.2.18 (pinned with ==)
     → Remove version pin to allow updates
-    → Or use 'py upgrade django' for major version change
+    → Or use 'srpt upgrade django' for major version change
 ```
 
 **Upper bound prevents update:**
 ```
-$ py update django
+$ srpt update django
 
 DRY RUN - No changes will be made
 
@@ -930,15 +930,15 @@ PACKAGES TO UPDATE:
   ! django 3.2.18 (constrained to <4.0)
     Latest within constraint: 3.2.19
     Latest overall: 4.2.11
-    → Run 'py update django --apply' to update to 3.2.19
-    → Run 'py upgrade django 4.2' to upgrade to 4.x
+    → Run 'srpt update django --apply' to update to 3.2.19
+    → Run 'srpt upgrade django 4.2' to upgrade to 4.x
 ```
 
 ### Compatibility Issues
 
 **Incompatible packages for Python upgrade:**
 ```
-$ py rebuild --with-version 3.12
+$ srpt rebuild --with-version 3.12
 
 DRY RUN - No changes will be made
 
@@ -950,15 +950,15 @@ COMPATIBILITY CHECK:
     • outdated-tool 1.5.0 (deprecated)
   
   Options:
-    → Update incompatible packages first: py update old-package legacy-lib
-    → Or force rebuild: py rebuild --with-version 3.12 --apply --force
+    → Update incompatible packages first: srpt update old-package legacy-lib
+    → Or force rebuild: srpt rebuild --with-version 3.12 --apply --force
 ```
 
 ### Self-Update Issues
 
 **No internet connection:**
 ```
-$ py update --self
+$ srpt update --self
 
 Error: Cannot check for updates
 Network error: Unable to reach github.com
@@ -967,21 +967,21 @@ Check your internet connection and try again.
 
 **Already on latest version:**
 ```
-$ py update --self
+$ srpt update --self
 
-✓ py is up to date
+✓ srpt is up to date
 Current version: 0.1.1
 Latest version:  0.1.1
 ```
 
 **Mutual exclusivity:**
 ```
-$ py update --self django
+$ srpt update --self django
 
 Error: Cannot use --self with package names
---self updates py itself, not packages
-→ Run 'py update django' to update packages
-→ Run 'py update --self' to update py
+--self updates srpt itself, not packages
+→ Run 'srpt update django' to update packages
+→ Run 'srpt update --self' to update py
 ```
 
 ---
@@ -989,25 +989,25 @@ Error: Cannot use --self with package names
 ## Success Criteria
 
 ### Phase 1 Complete When:
-- [ ] `py update --self` works end-to-end
-- [ ] `py update` respects all constraint types
-- [ ] `py audit` detects and reports vulnerabilities
-- [ ] `py status` shows health summary
-- [ ] `py health` shows full diagnostics
+- [ ] `srpt update --self` works end-to-end
+- [ ] `srpt update` respects all constraint types
+- [ ] `srpt audit` detects and reports vulnerabilities
+- [ ] `srpt status` shows health summary
+- [ ] `srpt health` shows full diagnostics
 - [ ] All unit tests pass
 - [ ] Documentation updated
 
 ### Phase 2 Complete When:
-- [ ] `py upgrade --try` creates backup and tests
-- [ ] `py upgrade --revert` restores correctly
-- [ ] `py upgrade --apply` makes permanent
-- [ ] `py rebuild` upgrades Python version
+- [ ] `srpt upgrade --try` creates backup and tests
+- [ ] `srpt upgrade --revert` restores correctly
+- [ ] `srpt upgrade --apply` makes permanent
+- [ ] `srpt rebuild` upgrades Python version
 - [ ] Backup management works correctly
 - [ ] All integration tests pass
 - [ ] Documentation complete
 
 ### Phase 3 Complete When:
-- [ ] `py health --fix` auto-fixes issues
+- [ ] `srpt health --fix` auto-fixes issues
 - [ ] Compatibility checks work
 - [ ] All edge cases handled
 - [ ] Full test coverage
@@ -1018,27 +1018,27 @@ Error: Cannot use --self with package names
 
 ## Open Questions for Implementation
 
-1. **GitHub API rate limits**: For `py update --self`, should we:
+1. **GitHub API rate limits**: For `srpt update --self`, should we:
    - Use unauthenticated API (60 req/hour)?
    - Support GitHub token for higher limits?
    - Cache version check results (24hr)?
 
 2. **Backup compression**: Should we:
-   - Copy .venv as-is (fast, but large)?
+   - Cosrpt .venv as-is (fast, but large)?
    - Compress backups (slow, but small)?
    - Let user choose with flag?
 
-3. **`py health` performance**: For large projects (100+ packages):
+3. **`srpt health` performance**: For large projects (100+ packages):
    - Check all packages sequentially?
    - Use parallel checks?
    - Cache PyPI responses?
 
-4. **`py upgrade` dependency updates**: When upgrading Django 3.2 → 4.2:
+4. **`srpt upgrade` dependency updates**: When upgrading Django 3.2 → 4.2:
    - Auto-update compatible dependencies?
    - Prompt for each dependency?
    - Show summary and ask once?
 
-5. **Rollback on failure**: If `py rebuild` fails mid-way:
+5. **Rollback on failure**: If `srpt rebuild` fails mid-way:
    - Auto-restore from backup?
    - Leave broken state for manual fix?
    - Ask user what to do?
@@ -1048,9 +1048,9 @@ Error: Cannot use --self with package names
 ## Recommendations for Open Questions
 
 1. **GitHub API rate limits**: Use unauthenticated API with 24hr cache
-2. **Backup compression**: Copy .venv as-is (simplicity over optimization)
-3. **`py health` performance**: Use parallel checks for performance
-4. **`py upgrade` dependency updates**: Show summary and ask once
+2. **Backup compression**: Cosrpt .venv as-is (simplicity over optimization)
+3. **`srpt health` performance**: Use parallel checks for performance
+4. **`srpt upgrade` dependency updates**: Show summary and ask once
 5. **Rollback on failure**: Auto-restore from backup on failure
 
 ---

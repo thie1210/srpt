@@ -1,7 +1,7 @@
 """
-Self-update functionality for py.
+Self-update functionality for srpt.
 
-Updates py to the latest version from GitHub releases.
+Updates srpt to the latest version from GitHub releases.
 """
 
 import asyncio
@@ -18,8 +18,8 @@ from . import __version__
 from .utils.confirm import dry_run_header, print_success, print_error, print_warning
 
 
-GITHUB_API = "https://api.github.com/repos/thie1210/py/releases/latest"
-GITHUB_ARCHIVE = "https://github.com/thie1210/py/archive/refs/tags/v{version}.tar.gz"
+GITHUB_API = "https://api.github.com/repos/thie1210/srpt/releases/latest"
+GITHUB_ARCHIVE = "https://github.com/thie1210/srpt/archive/refs/tags/v{version}.tar.gz"
 
 
 async def check_for_updates() -> Optional[str]:
