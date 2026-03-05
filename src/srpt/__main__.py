@@ -1,7 +1,7 @@
 """
-Py - A PSF-owned, Python-written replacement for pip
+srpt (serpent) - A modern Python package manager
 
-This is the entry point for the Py CLI tool.
+This is the entry point for the srpt CLI tool.
 """
 
 import argparse
@@ -10,14 +10,14 @@ import os
 import subprocess
 from pathlib import Path
 from typing import Optional, List
-from py import __version__
+from srpt import __version__
 
 
 def main():
-    """Main entry point for the Py CLI."""
+    """Main entry point for the srpt CLI."""
     parser = argparse.ArgumentParser(
-        prog="py",
-        description="A PSF-owned, Python-written replacement for pip — inspired by uv",
+        prog="srpt",
+        description="A modern Python package manager — inspired by uv",
     )
 
     parser.add_argument(
