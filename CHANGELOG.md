@@ -19,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Honors the "snakes eat snake food" philosophy
 - Perfect metaphor: serpents shed skin to grow (like package updates)
 
+## [0.2.20] - 2026-03-05
+
+### Fixed
+- Fixed health check to use 'srpt_version' instead of 'py_version' in output
+- Fixed 'unknown' version display in health check
+- Updated all test data to use correct key name
+
 ## [0.2.19] - 2026-03-05
 
 ### Fixed
