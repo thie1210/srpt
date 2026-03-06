@@ -72,14 +72,16 @@ Build `srpt` (serpent) - A modern, performant Python package manager inspired by
 - v0.2.19: Fixed self-update extraction to handle py->srpt repo name transition
 - v0.2.20: Fixed health check to use 'srpt_version' instead of 'py_version', comprehensive README update
 - v0.2.21: Fixed backup naming bug in rebuild command
+- v0.2.22: Fixed installer to handle package upgrades properly
 
 ## Current State
 
-**Latest Release:** v0.2.21 (2026-03-05)
+**Latest Release:** v0.2.22 (2026-03-05)
 - All user-facing messages now use 'srpt' instead of 'py'
 - Health check displays version correctly
 - Self-update handles both 'py' and 'srpt' directory names for smooth transition
 - Backup naming fixed in rebuild command
+- Installer handles package upgrades properly (uninstalls old version first)
 - Data directory at `~/.local/share/srpt/` (consistent with package name)
 - Environment variables: `SRPT_BASE_DIR`, `SRPT_BIN_DIR`
 - All tests passing (42/42)
@@ -104,7 +106,7 @@ srpt/
 │   ├── updates-upgrades-health-system.md  # Phase 1-3 implementation plan (Phase 1 complete)
 │   └── eol-checking-system.md             # EOL checking plan (ready to implement)
 ├── src/srpt/
-│   ├── __init__.py              # Version: "0.2.21"
+│   ├── __init__.py              # Version: "0.2.22"
 │   ├── __main__.py              # CLI entry point, command routing
 │   ├── rebuild.py               # Rebuild command
 │   ├── health.py                # Health diagnostics, compatibility checking
@@ -127,6 +129,6 @@ srpt/
 │   └── test_resolver_httpx.py   # 1 test
 ├── install.sh                   # Unix installer
 ├── install.ps1                  # Windows installer
-├── pyproject.toml              # name="srpt", version="0.2.21"
+├── pyproject.toml              # name="srpt", version="0.2.22"
 └── README.md
 ```
