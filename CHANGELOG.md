@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Honors the "snakes eat snake food" philosophy
 - Perfect metaphor: serpents shed skin to grow (like package updates)
 
+## [0.2.22] - 2026-03-05
+
+### Fixed
+- Fixed installer to handle package upgrades properly
+- When installing a package with a different version than what's installed, the old version is now uninstalled first
+- Changed message from "Upgrading" to "Changing" to be more accurate (handles both upgrades and downgrades)
+- No longer requires --upgrade flag for version changes
+
 ## [0.2.21] - 2026-03-05
 
 ### Fixed
