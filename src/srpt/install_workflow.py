@@ -30,10 +30,27 @@ async def install_command(packages: List[str]):
     # Check if packages are already installed
     packages_to_install = []
     for pkg in packages:
-        existing_version = get_installed_version(pkg, site_packages)
+        # Parse package name and version constraint
+        from packaging.requirements import Requirement
+
+        try:
+            req = Requirement(pkg)
+            pkg_name = req.name
+        except Exception:
+            pkg_name = (
+                pkg.split("==")[0]
+                .split("~=")[0]
+                .split(">=")[0]
+                .split("<=")[0]
+                .split(">")[0]
+                .split("<")[0]
+            )
+
+        existing_version = get_installed_version(pkg_name, site_packages)
         if existing_version:
-            print(f"srpt: {pkg}=={existing_version} is already installed")
-            print(f"srpt: Use 'srpt install --upgrade {pkg}' to upgrade")
+            print(f"srpt: {pkg_name}=={existing_version} is already installed")
+            # Don't skip - let the resolver determine if we need to upgrade
+            packages_to_install.append(pkg)
         else:
             packages_to_install.append(pkg)
 
@@ -53,23 +70,46 @@ async def install_command(packages: List[str]):
         candidates = await resolve(packages_to_install)
 
     # Filter out already-installed packages (including dependencies)
+    # If a different version is installed, mark for uninstall first
     from packaging.version import parse as parse_version
+    from srpt.uninstall import uninstall_package
 
+    packages_to_uninstall = []
     candidates_to_install = []
+
     for c in candidates:
         existing_version = get_installed_version(c.name, site_packages)
         if existing_version:
             try:
-                if parse_version(existing_version) == parse_version(str(c.version)):
+                existing_ver = parse_version(existing_version)
+                target_ver = parse_version(str(c.version))
+
+                if existing_ver == target_ver:
                     print(f"srpt: {c.name}=={c.version} is already installed (skipping)")
                     continue
+                else:
+                    # Different version installed - need to uninstall first
+                    print(f"srpt: Changing {c.name} from {existing_version} to {c.version}")
+                    packages_to_uninstall.append(c.name)
+                    candidates_to_install.append(c)
             except Exception:
                 # Fall back to string comparison
                 if existing_version == str(c.version):
                     print(f"srpt: {c.name}=={c.version} is already installed (skipping)")
                     continue
+                else:
+                    # Different version - uninstall first
+                    print(f"srpt: Changing {c.name} from {existing_version} to {c.version}")
+                    packages_to_uninstall.append(c.name)
+                    candidates_to_install.append(c)
+        else:
+            candidates_to_install.append(c)
 
-        candidates_to_install.append(c)
+    # Uninstall old versions first
+    if packages_to_uninstall:
+        print(f"srpt: Uninstalling {len(packages_to_uninstall)} old package version(s)…")
+        for pkg_name in packages_to_uninstall:
+            uninstall_package(pkg_name, site_packages)
 
     if not candidates_to_install:
         print("srpt: All packages and dependencies are already installed")

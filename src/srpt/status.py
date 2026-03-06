@@ -254,6 +254,20 @@ def format_status(show_cache: bool = False):
     packages = get_package_status()
     deps = get_dependency_sync_status()
 
+    console.print("PYTHON", style="bold cyan")
+    if project["has_venv"] and project["venv_python_version"]:
+        console.print(f"  Version: {project['venv_python_version']} (in .venv)")
+    elif python["latest_version"]:
+        console.print(f"  Version: {python['latest_version']} (srpt managed)")
+        console.print(
+            f"  → Run 'srpt versions' to see all {python['installed_count']} installed", style="dim"
+        )
+        console.print("  → Run 'srpt fetch <version>' to install another", style="dim")
+    else:
+        console.print("  ✗ No Python versions managed", style="yellow")
+        console.print("  → Run 'srpt fetch 3.14' to install Python", style="dim")
+    console.print()
+    
     console.print("PROJECT", style="bold cyan")
     if project["has_pyproject"]:
         if project["project_name"]:
@@ -273,19 +287,6 @@ def format_status(show_cache: bool = False):
         console.print("  → Run 'srpt install <pkg>' to create one", style="dim")
     console.print()
 
-    console.print("PYTHON", style="bold cyan")
-    if project["has_venv"] and project["venv_python_version"]:
-        console.print(f"  Version: {project['venv_python_version']} (in .venv)")
-    elif python["latest_version"]:
-        console.print(f"  Version: {python['latest_version']} (srpt managed)")
-        console.print(
-            f"  → Run 'srpt versions' to see all {python['installed_count']} installed", style="dim"
-        )
-        console.print("  → Run 'srpt fetch <version>' to install another", style="dim")
-    else:
-        console.print("  ✗ No Python versions managed", style="yellow")
-        console.print("  → Run 'srpt fetch 3.14' to install Python", style="dim")
-    console.print()
 
     console.print("PACKAGES", style="bold cyan")
     if packages["has_venv"]:
